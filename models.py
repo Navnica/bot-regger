@@ -11,7 +11,7 @@ class BaseModel(peewee.Model):
 
 class User(BaseModel):
     telegram_id = peewee.IntegerField(null=False)
-    power_level = peewee.IntegerField(default=1)
+    power_level = peewee.IntegerField(null=False, default=1)
 
 
 class Action(BaseModel):
@@ -26,10 +26,23 @@ class Action(BaseModel):
 class TMessage(BaseModel):
     chat_id = peewee.IntegerField(null=False)
     message_thread_id = peewee.IntegerField(null=False)
+    message_author = peewee.ForeignKeyField(User, related_name='message_author')
     message_id = peewee.IntegerField(null=False)
-    time_send = peewee.DateTimeField(null=False, default=datetime.now())
+
+
+class DeleteList(BaseModel):
+    t_message = peewee.ForeignKeyField(TMessage, related_name='t_message')
+    time_delete = peewee.DateTimeField(null=True)
+
+
+class WaitAnswer(BaseModel):
+    t_message = peewee.ForeignKeyField(TMessage, related_name='t_message')
+    user = peewee.ForeignKeyField(User, related_name='user')
+    yes_or_no = peewee.BooleanField(default=False)
 
 
 Action.create_table()
 User.create_table()
 TMessage.create_table()
+DeleteList.create_table()
+WaitAnswer.create_table()
