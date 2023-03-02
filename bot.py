@@ -26,58 +26,66 @@ threading.Thread(target=message_cleaner).start()
 
 @bot.message_handler(content_types=['text'])
 def get_text_messages(message: telebot.types.Message) -> None:
+
+    print(f'{message.from_user} : {message.text}')
+
     user_instance = models.User.get_or_create(telegram_id=message.from_user.id)
+    waited: models.WaitAnswer = models.WaitAnswer.get_or_none(user=user_instance[0])
 
     if message.text.startswith('regex'):
         regexpparser.RegexpParser(message, bot).parse_regex()
         return
 
-    waited: models.WaitAnswer = models.WaitAnswer.get_or_none(user=user_instance[0])
-
     if waited:
         action: models.Action = models.Action.get(
             models.Action.chat_id == message.chat.id,
             models.Action.message_thread_id == message.message_thread_id,
-        )
-
-        t_message = models.TMessage.create(
-            chat_id=message.chat.id,
-            message_thread_id=message.message_thread_id,
-            message_author=models.User.get(models.User.telegram_id == message.from_user.id),
-            message_id=message.message_id
-        )
-
-        t_message.save()
+            )
 
         models.DeleteList.create(
-            t_message=t_message,
+            t_message=waited.t_message,
             time_delete=datetime.datetime.now() + datetime.timedelta(seconds=action.time_out_value)
         ).save()
 
         if waited.yes_or_no:
-            if message.text == 'НЕТ':
-                models.DeleteList.create(
-                    t_message=waited.t_message,
-                    time_delete=datetime.datetime.now() + datetime.timedelta(seconds=action.time_out_value)
-                ).save()
-
-                waited.delete_instance()
+            return
 
         else:
             models.DeleteList.create(
-                t_message=waited.t_message,
+                t_message=waited.bot_t_message,
                 time_delete=datetime.datetime.now() + datetime.timedelta(seconds=action.time_out_value)
             ).save()
 
-            waited.delete_instance()
+        waited.delete_instance()
 
     answer: str = regexpparser.RegexpParser(message, bot).parse_message()
 
     if not answer:
         return
 
-    bot.send_message(
-        chat_id=message.chat.id,
-        message_thread_id=message.message_thread_id,
-        text=answer
+    bot.reply_to(message, answer)
+
+
+@bot.callback_query_handler(func=lambda call: True)
+def callback_worker(call):
+    user_instance = models.User.get_or_create(telegram_id=call.from_user.id)
+    waited: models.WaitAnswer = models.WaitAnswer.get_or_none(user=user_instance[0])
+    action: models.Action = models.Action.get(
+        models.Action.chat_id == call.message.chat.id,
+        models.Action.message_thread_id == call.message.message_thread_id,
     )
+
+    if not waited: return
+
+    models.DeleteList.create(
+        t_message=waited.t_message,
+        time_delete=datetime.datetime.now() + datetime.timedelta(seconds=action.time_out_value)
+    ).save()
+
+    if call.data == 'markup_no':
+        models.DeleteList.create(
+            t_message=waited.bot_t_message,
+            time_delete=datetime.datetime.now() + datetime.timedelta(seconds=action.time_out_value)
+        ).save()
+
+        waited.delete_instance()

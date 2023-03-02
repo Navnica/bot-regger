@@ -2,6 +2,8 @@ import re
 from telebot.types import Message
 from telebot import TeleBot
 import models
+import keyboards
+
 
 class RegexpParser:
     message: Message = None
@@ -32,7 +34,7 @@ class RegexpParser:
         models.Action.create(
             chat_id=self.message.chat.id,
             message_thread_id=self.message.message_thread_id,
-            regular_expression=exs[0],
+            regular_expression=str(exs[0])[1 : -1],
             text=exs[2].split("'")[1],
             def_name='answer'
         ).save()
@@ -61,38 +63,47 @@ class RegexpParser:
         return action.text
 
     def answer_delete_after(self, action: models.Action) -> str | None:
-        t_message = self.create_bot_message(action)
+        new_message = self.bot.reply_to(
+            message=self.message,
+            text=action.text
+        )
+
+        t_message = self.t_message_create(self.message)
+        bot_t_message = self.t_message_create(new_message)
 
         models.WaitAnswer.create(
             t_message=t_message,
-            user=models.User.get(models.User.telegram_id == self.message.from_user.id),
+            bot_t_message=bot_t_message,
+            user=models.User.get(models.User.telegram_id==self.message.from_user.id)
         ).save()
 
         return None
 
     def answer_question_yes_no(self, action: models.Action) -> str | None:
-        t_message = self.create_bot_message(action)
+        new_message = self.bot.reply_to(
+            message=self.message,
+            text=action.text,
+            reply_markup=keyboards.yes_no_markup
+        )
+
+        t_message = self.t_message_create(self.message)
+        bot_t_message = self.t_message_create(new_message)
 
         models.WaitAnswer.create(
             t_message=t_message,
+            bot_t_message=bot_t_message,
             user=models.User.get(models.User.telegram_id == self.message.from_user.id),
             yes_or_no=True
         ).save()
 
         return None
 
-    def create_bot_message(self, action: models.Action) -> models.TMessage:
-        new_message = self.bot.send_message(
-            text=action.text,
-            chat_id=self.message.chat.id,
-            message_thread_id=self.message.message_thread_id
-        )
-
+    def t_message_create(self, message: Message) -> models.TMessage:
         t_message = models.TMessage.create(
-            chat_id=new_message.chat.id,
-            message_thread_id=new_message.message_thread_id,
+            chat_id=message.chat.id,
+            message_thread_id=message.message_thread_id,
             message_author=models.User.get(models.User.telegram_id == self.bot.get_me().id),
-            message_id=new_message.message_id
+            message_id=message.message_id
         )
 
         t_message.save()

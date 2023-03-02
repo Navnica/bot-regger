@@ -16,7 +16,7 @@ class User(BaseModel):
 
 class Action(BaseModel):
     chat_id = peewee.IntegerField(null=False)
-    message_thread_id = peewee.IntegerField(null=False)
+    message_thread_id = peewee.IntegerField(null=True)
     regular_expression = peewee.CharField(null=False)
     def_name = peewee.CharField(null=False)
     text = peewee.CharField(null=False)
@@ -25,7 +25,7 @@ class Action(BaseModel):
 
 class TMessage(BaseModel):
     chat_id = peewee.IntegerField(null=False)
-    message_thread_id = peewee.IntegerField(null=False)
+    message_thread_id = peewee.IntegerField(null=True)
     message_author = peewee.ForeignKeyField(User, related_name='message_author')
     message_id = peewee.IntegerField(null=False)
 
@@ -37,6 +37,7 @@ class DeleteList(BaseModel):
 
 class WaitAnswer(BaseModel):
     t_message = peewee.ForeignKeyField(TMessage, related_name='t_message')
+    bot_t_message = peewee.ForeignKeyField(TMessage, related_name='bot_t_message')
     user = peewee.ForeignKeyField(User, related_name='user')
     yes_or_no = peewee.BooleanField(default=False)
 
