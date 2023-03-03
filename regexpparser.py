@@ -3,6 +3,7 @@ from telebot.types import Message
 from telebot import TeleBot
 import models
 import keyboards
+import datetime
 
 
 class RegexpParser:
@@ -62,48 +63,42 @@ class RegexpParser:
     def answer(self, action: models.Action) -> str:
         return action.text
 
-    def answer_delete_after(self, action: models.Action) -> str | None:
+    def answer_delete_after(self, action: models.Action, markup=None) -> str | None:
         new_message = self.bot.reply_to(
             message=self.message,
-            text=action.text
+            text=action.text,
+            reply_markup=markup
         )
 
-        t_message = self.t_message_create(self.message)
-        bot_t_message = self.t_message_create(new_message)
+        t_message = self.t_message_create(self.message, action)
+        bot_t_message = self.t_message_create(new_message, action)
+        correct_time_delete = datetime.datetime.now() + datetime.timedelta(seconds=action.time_out_value)
 
-        models.WaitAnswer.create(
-            t_message=t_message,
-            bot_t_message=bot_t_message,
-            user=models.User.get(models.User.telegram_id==self.message.from_user.id)
+        models.DeleteList.create(
+            t_message=bot_t_message,
+            time_delete=correct_time_delete
         ).save()
+
+        models.DeleteList.create(
+            t_message=t_message,
+            time_delete=correct_time_delete
+        ).save()
+
 
         return None
 
     def answer_question_yes_no(self, action: models.Action) -> str | None:
-        new_message = self.bot.reply_to(
-            message=self.message,
-            text=action.text,
-            reply_markup=keyboards.yes_no_markup
-        )
-
-        t_message = self.t_message_create(self.message)
-        bot_t_message = self.t_message_create(new_message)
-
-        models.WaitAnswer.create(
-            t_message=t_message,
-            bot_t_message=bot_t_message,
-            user=models.User.get(models.User.telegram_id == self.message.from_user.id),
-            yes_or_no=True
-        ).save()
+        self.answer_delete_after(action, keyboards.yes_no_markup)
 
         return None
 
-    def t_message_create(self, message: Message) -> models.TMessage:
+    def t_message_create(self, message: Message, action: models.Action) -> models.TMessage:
         t_message = models.TMessage.create(
             chat_id=message.chat.id,
             message_thread_id=message.message_thread_id,
             message_author=models.User.get(models.User.telegram_id == self.bot.get_me().id),
-            message_id=message.message_id
+            message_id=message.message_id,
+            action=action
         )
 
         t_message.save()

@@ -28,6 +28,7 @@ class TMessage(BaseModel):
     message_thread_id = peewee.IntegerField(null=True)
     message_author = peewee.ForeignKeyField(User, related_name='message_author')
     message_id = peewee.IntegerField(null=False)
+    action = peewee.ForeignKeyField(Action, null=True)
 
 
 class DeleteList(BaseModel):
@@ -35,15 +36,7 @@ class DeleteList(BaseModel):
     time_delete = peewee.DateTimeField(null=True)
 
 
-class WaitAnswer(BaseModel):
-    t_message = peewee.ForeignKeyField(TMessage, related_name='t_message')
-    bot_t_message = peewee.ForeignKeyField(TMessage, related_name='bot_t_message')
-    user = peewee.ForeignKeyField(User, related_name='user')
-    yes_or_no = peewee.BooleanField(default=False)
-
-
 Action.create_table()
 User.create_table()
 TMessage.create_table()
 DeleteList.create_table()
-WaitAnswer.create_table()
