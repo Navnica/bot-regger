@@ -1,5 +1,4 @@
-from bot import bot
-
+from bot import start_poll
 
 if __name__ == '__main__':
-    bot.infinity_polling()
+    start_poll()

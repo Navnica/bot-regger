@@ -1,6 +1,4 @@
 import datetime
-import time
-
 import peewee
 import telebot
 import json
@@ -10,11 +8,13 @@ import models
 
 bot = telebot.TeleBot(json.load(open('config.json', encoding='utf-8'))['token'])
 bot_instance = models.User.get_or_create(telegram_id=bot.get_me().id, power_level=2)
+stop = False
 
 
 def message_cleaner():
+    global stop
     while True:
-        time.sleep(1)
+        if stop: return
         for msg in models.DeleteList.select():
             if datetime.datetime.now() > msg.time_delete:
                 try:
@@ -31,7 +31,8 @@ def message_cleaner():
                 msg.delete_instance()
 
 
-threading.Thread(target=message_cleaner).start()
+cleaner = threading.Thread(target=message_cleaner)
+cleaner.start()
 
 
 @bot.message_handler(content_types=['text'])
@@ -90,3 +91,10 @@ def callback_worker(call: telebot.types.CallbackQuery):
         y: models.DeleteList = models.DeleteList.get(models.DeleteList.t_message == bot_t_message)
         y.time_delete = datetime.datetime.now()
         y.save()
+
+
+def start_poll():
+    bot.infinity_polling()
+    global stop
+
+    stop = True
