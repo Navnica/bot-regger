@@ -20,7 +20,6 @@ Regger checks the message, then checks it for a suitable regular expression
 ## Running
 
 The bot comes without a filled database
-How to make it read in [Service](#service)
 
 Add your token in config.json
 
