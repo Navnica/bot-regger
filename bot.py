@@ -56,6 +56,9 @@ def get_text_messages(message: telebot.types.Message) -> None:
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_worker(call: telebot.types.CallbackQuery):
+    time: datetime = datetime.datetime.now().time()
+    print(f'{call.from_user.username} : {call.data} : {time}')
+
     message = call.message.reply_to_message
 
     if message:
@@ -77,9 +80,9 @@ def callback_worker(call: telebot.types.CallbackQuery):
     )
 
     if call.data == 'markup_yes':
-        models.DeleteList.get(bot_t_message == bot_t_message).delete_instance()
+        models.DeleteList.get(models.DeleteList.t_message == t_message).delete_instance()
 
-        x: models.DeleteList = models.DeleteList.get(models.DeleteList.t_message == t_message)
+        x: models.DeleteList = models.DeleteList.get(models.DeleteList.t_message == bot_t_message)
         x.time_delete = datetime.datetime.now()
         x.save()
 

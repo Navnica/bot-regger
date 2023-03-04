@@ -35,7 +35,7 @@ class RegexpParser:
         models.Action.create(
             chat_id=self.message.chat.id,
             message_thread_id=self.message.message_thread_id,
-            regular_expression=str(exs[0])[1 : -1],
+            regular_expression=str(exs[0])[1:-1],
             text=exs[2].split("'")[1],
             def_name='answer'
         ).save()
@@ -44,7 +44,7 @@ class RegexpParser:
         models.Action.create(
             chat_id=self.message.chat.id,
             message_thread_id=self.message.message_thread_id,
-            regular_expression=exs[0],
+            regular_expression=str(exs[0])[1: -1],
             text=exs[2].split("'")[1],
             def_name='answer_delete_after',
             time_out_value=int(exs[2].split(',')[-1].replace(' ', ''))
@@ -54,7 +54,7 @@ class RegexpParser:
         models.Action.create(
             chat_id=self.message.chat.id,
             message_thread_id=self.message.message_thread_id,
-            regular_expression=exs[0],
+            regular_expression=str(exs[0])[1 : -1],
             text=exs[2].split("'")[1],
             def_name='answer_question_yes_no',
             time_out_value=int(exs[2].split(',')[-1].replace(' ', ''))
