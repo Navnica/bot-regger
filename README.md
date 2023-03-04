@@ -1,4 +1,4 @@
-# Bot Clown
+# Bot Regger
 
 ![_](https://img.shields.io/badge/license-wtfpl-green)
 
