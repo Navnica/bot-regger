@@ -1,0 +1,604 @@
+(08:03:2023 01:05:58) [INFO] Navnica : test
+(08:03:2023 01:06:24) [ERROR] Infinity polling: polling exited
+(08:03:2023 01:06:24) [ERROR] Break infinity polling
+(08:03:2023 01:07:05) [ERROR] Infinity polling: polling exited
+(08:03:2023 01:07:05) [ERROR] Break infinity polling
+(08:03:2023 01:07:32) [INFO] Navnica : 1
+(08:03:2023 01:10:59) [CRITICAL] test
+(08:03:2023 01:14:14) [ERROR] Infinity polling: polling exited
+(08:03:2023 01:14:14) [ERROR] Break infinity polling
+(08:03:2023 01:14:18) [INFO] Navnica : 1
+(08:03:2023 01:14:33) [ERROR] Infinity polling: polling exited
+(08:03:2023 01:14:33) [ERROR] Break infinity polling
+(08:03:2023 01:15:29) [ERROR] Infinity polling: polling exited
+(08:03:2023 01:15:29) [ERROR] Break infinity polling
+(08:03:2023 01:15:40) [INFO] Navnica : 1
+(08:03:2023 01:15:57) [INFO] Navnica : s\
+(08:03:2023 01:16:17) [INFO] Navnica : s
+(08:03:2023 01:16:44) [INFO] Navnica : s
+(08:03:2023 01:17:47) [ERROR] Infinity polling: polling exited
+(08:03:2023 01:17:47) [ERROR] Break infinity polling
+(08:03:2023 01:21:57) [INFO] Navnica : s
+(08:03:2023 01:21:57) [ERROR] Infinity polling exception: NOT NULL constraint failed: adminmessage.t_message_id
+(08:03:2023 01:21:57) [ERROR] Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 7077, in get
+    return clone.execute(database)[0]
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 4441, in __getitem__
+    return self.row_cache[item]
+           ~~~~~~~~~~~~~~^^^^^^
+IndexError: list index out of range
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 6671, in get_or_create
+    return query.get(), False
+           ^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 7080, in get
+    raise self.model.DoesNotExist('%s instance matching query does '
+src.database.models.AdminMessageDoesNotExist: <Model: AdminMessage> instance matching query does not exist:
+SQL: SELECT "t1"."id", "t1"."t_message_id", "t1"."user_id" FROM "adminmessage" AS "t1" LIMIT ? OFFSET ?
+Params: [1, 0]
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 955, in infinity_polling
+    self.polling(non_stop=True, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1043, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1118, in __threaded_polling
+    raise e
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1074, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 148, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 91, in run
+    task(*args, **kwargs)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 6428, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\src\bot.py", line 56, in on_admin_message
+    t_message: models.AdminMessage = models.AdminMessage.get_or_create()
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 6673, in get_or_create
+    raise exc
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 6668, in get_or_create
+    return cls.create(**kwargs), True
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 6537, in create
+    inst.save(force_insert=True)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 6747, in save
+    pk = self.insert(**field_dict).execute()
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 1962, in inner
+    return method(self, database, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 2033, in execute
+    return self._execute(database)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 2838, in _execute
+    return super(Insert, self)._execute(database)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 2551, in _execute
+    cursor = database.execute(self)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3244, in execute
+    return self.execute_sql(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3234, in execute_sql
+    with __exception_wrapper__:
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3010, in __exit__
+    reraise(new_type, new_type(exc_value, *exc_args), traceback)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 192, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3236, in execute_sql
+    cursor.execute(sql, params or ())
+peewee.IntegrityError: NOT NULL constraint failed: adminmessage.t_message_id
+
+(08:03:2023 01:22:38) [ERROR] Infinity polling: polling exited
+(08:03:2023 01:22:38) [ERROR] Break infinity polling
+(08:03:2023 01:22:42) [INFO] Navnica : s
+(08:03:2023 01:22:44) [INFO] Navnica : asf
+(08:03:2023 01:28:28) [ERROR] Infinity polling: polling exited
+(08:03:2023 01:28:28) [ERROR] Break infinity polling
+(08:03:2023 01:29:00) [INFO] Navnica : t
+(08:03:2023 01:29:00) [ERROR] Infinity polling exception: 'InlineKeyboardButton' object is not iterable
+(08:03:2023 01:29:00) [ERROR] Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 955, in infinity_polling
+    self.polling(non_stop=True, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1043, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1118, in __threaded_polling
+    raise e
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1074, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 148, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 91, in run
+    task(*args, **kwargs)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 6428, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\src\bot.py", line 57, in on_admin_message
+    new_message = bot.send_message(
+                  ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1549, in send_message
+    apihelper.send_message(
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\apihelper.py", line 249, in send_message
+    payload['reply_markup'] = _convert_markup(reply_markup)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\apihelper.py", line 1841, in _convert_markup
+    return markup.to_json()
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\types.py", line 2523, in to_json
+    return json.dumps(self.to_dict())
+                      ^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\types.py", line 2527, in to_dict
+    json_dict['inline_keyboard'] = [[button.to_dict() for button in row] for row in self.keyboard]
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: 'InlineKeyboardButton' object is not iterable
+
+(08:03:2023 01:31:45) [INFO] Navnica : s
+(08:03:2023 01:31:45) [ERROR] Infinity polling exception: 'InlineKeyboardButton' object is not iterable
+(08:03:2023 01:31:45) [ERROR] Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 955, in infinity_polling
+    self.polling(non_stop=True, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1043, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1118, in __threaded_polling
+    raise e
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1074, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 148, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 91, in run
+    task(*args, **kwargs)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 6428, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\src\bot.py", line 57, in on_admin_message
+    new_message = bot.send_message(
+                  ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1549, in send_message
+    apihelper.send_message(
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\apihelper.py", line 249, in send_message
+    payload['reply_markup'] = _convert_markup(reply_markup)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\apihelper.py", line 1841, in _convert_markup
+    return markup.to_json()
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\types.py", line 2523, in to_json
+    return json.dumps(self.to_dict())
+                      ^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\types.py", line 2527, in to_dict
+    json_dict['inline_keyboard'] = [[button.to_dict() for button in row] for row in self.keyboard]
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: 'InlineKeyboardButton' object is not iterable
+
+(08:03:2023 01:32:06) [ERROR] Infinity polling: polling exited
+(08:03:2023 01:32:06) [ERROR] Break infinity polling
+(08:03:2023 01:32:07) [INFO] Navnica : t
+(08:03:2023 01:32:07) [ERROR] Infinity polling exception: 'InlineKeyboardButton' object is not iterable
+(08:03:2023 01:32:07) [ERROR] Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 955, in infinity_polling
+    self.polling(non_stop=True, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1043, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1118, in __threaded_polling
+    raise e
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1074, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 148, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 91, in run
+    task(*args, **kwargs)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 6428, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\src\bot.py", line 57, in on_admin_message
+    new_message = bot.send_message(
+                  ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1549, in send_message
+    apihelper.send_message(
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\apihelper.py", line 249, in send_message
+    payload['reply_markup'] = _convert_markup(reply_markup)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\apihelper.py", line 1841, in _convert_markup
+    return markup.to_json()
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\types.py", line 2523, in to_json
+    return json.dumps(self.to_dict())
+                      ^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\types.py", line 2527, in to_dict
+    json_dict['inline_keyboard'] = [[button.to_dict() for button in row] for row in self.keyboard]
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: 'InlineKeyboardButton' object is not iterable
+
+(08:03:2023 01:34:09) [ERROR] Infinity polling: polling exited
+(08:03:2023 01:34:09) [ERROR] Break infinity polling
+(08:03:2023 01:34:11) [INFO] Navnica : t
+(08:03:2023 01:34:11) [ERROR] Infinity polling exception: 'InlineKeyboardButton' object is not iterable
+(08:03:2023 01:34:11) [ERROR] Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 955, in infinity_polling
+    self.polling(non_stop=True, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1043, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1118, in __threaded_polling
+    raise e
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1074, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 148, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 91, in run
+    task(*args, **kwargs)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 6428, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\src\bot.py", line 57, in on_admin_message
+    new_message = bot.send_message(
+                  ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1549, in send_message
+    apihelper.send_message(
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\apihelper.py", line 249, in send_message
+    payload['reply_markup'] = _convert_markup(reply_markup)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\apihelper.py", line 1841, in _convert_markup
+    return markup.to_json()
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\types.py", line 2523, in to_json
+    return json.dumps(self.to_dict())
+                      ^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\types.py", line 2527, in to_dict
+    json_dict['inline_keyboard'] = [[button.to_dict() for button in row] for row in self.keyboard]
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\types.py", line 2527, in <listcomp>
+    json_dict['inline_keyboard'] = [[button.to_dict() for button in row] for row in self.keyboard]
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: 'InlineKeyboardButton' object is not iterable
+
+(08:03:2023 01:34:32) [ERROR] Infinity polling: polling exited
+(08:03:2023 01:34:32) [ERROR] Break infinity polling
+(08:03:2023 01:34:33) [INFO] Navnica : f
+(08:03:2023 01:34:48) [ERROR] Infinity polling: polling exited
+(08:03:2023 01:34:48) [ERROR] Break infinity polling
+(08:03:2023 01:34:50) [INFO] Navnica : s
+(08:03:2023 01:34:50) [ERROR] Infinity polling exception: 'InlineKeyboardButton' object is not iterable
+(08:03:2023 01:34:50) [ERROR] Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 955, in infinity_polling
+    self.polling(non_stop=True, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1043, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1118, in __threaded_polling
+    raise e
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1074, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 148, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 91, in run
+    task(*args, **kwargs)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 6428, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\src\bot.py", line 57, in on_admin_message
+    new_message = bot.send_message(
+                  ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1549, in send_message
+    apihelper.send_message(
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\apihelper.py", line 249, in send_message
+    payload['reply_markup'] = _convert_markup(reply_markup)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\apihelper.py", line 1841, in _convert_markup
+    return markup.to_json()
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\types.py", line 2523, in to_json
+    return json.dumps(self.to_dict())
+                      ^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\types.py", line 2527, in to_dict
+    json_dict['inline_keyboard'] = [[button.to_dict() for button in row] for row in self.keyboard]
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: 'InlineKeyboardButton' object is not iterable
+
+(08:03:2023 01:34:51) [INFO] Navnica : f
+(08:03:2023 01:34:53) [ERROR] Infinity polling exception: 'InlineKeyboardButton' object is not iterable
+(08:03:2023 01:34:53) [ERROR] Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 955, in infinity_polling
+    self.polling(non_stop=True, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1043, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1118, in __threaded_polling
+    raise e
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1074, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 148, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 91, in run
+    task(*args, **kwargs)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 6428, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\src\bot.py", line 57, in on_admin_message
+    new_message = bot.send_message(
+                  ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1549, in send_message
+    apihelper.send_message(
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\apihelper.py", line 249, in send_message
+    payload['reply_markup'] = _convert_markup(reply_markup)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\apihelper.py", line 1841, in _convert_markup
+    return markup.to_json()
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\types.py", line 2523, in to_json
+    return json.dumps(self.to_dict())
+                      ^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\types.py", line 2527, in to_dict
+    json_dict['inline_keyboard'] = [[button.to_dict() for button in row] for row in self.keyboard]
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: 'InlineKeyboardButton' object is not iterable
+
+(08:03:2023 01:34:54) [INFO] Navnica : 1
+(08:03:2023 01:34:56) [ERROR] Infinity polling exception: 'InlineKeyboardButton' object is not iterable
+(08:03:2023 01:34:56) [ERROR] Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 955, in infinity_polling
+    self.polling(non_stop=True, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1043, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1118, in __threaded_polling
+    raise e
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1074, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 148, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 91, in run
+    task(*args, **kwargs)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 6428, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\src\bot.py", line 57, in on_admin_message
+    new_message = bot.send_message(
+                  ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1549, in send_message
+    apihelper.send_message(
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\apihelper.py", line 249, in send_message
+    payload['reply_markup'] = _convert_markup(reply_markup)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\apihelper.py", line 1841, in _convert_markup
+    return markup.to_json()
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\types.py", line 2523, in to_json
+    return json.dumps(self.to_dict())
+                      ^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\types.py", line 2527, in to_dict
+    json_dict['inline_keyboard'] = [[button.to_dict() for button in row] for row in self.keyboard]
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: 'InlineKeyboardButton' object is not iterable
+
+(08:03:2023 01:36:38) [ERROR] Infinity polling: polling exited
+(08:03:2023 01:36:38) [ERROR] Break infinity polling
+(08:03:2023 01:36:40) [INFO] Navnica : d
+(08:03:2023 01:47:46) [ERROR] Infinity polling: polling exited
+(08:03:2023 01:47:46) [ERROR] Break infinity polling
+(08:03:2023 01:52:29) [INFO] Navnica : ??
+(08:03:2023 01:52:29) [ERROR] Infinity polling exception: NOT NULL constraint failed: group.name
+(08:03:2023 01:52:29) [ERROR] Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 7077, in get
+    return clone.execute(database)[0]
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 4441, in __getitem__
+    return self.row_cache[item]
+           ~~~~~~~~~~~~~~^^^^^^
+IndexError: list index out of range
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 6671, in get_or_create
+    return query.get(), False
+           ^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 7080, in get
+    raise self.model.DoesNotExist('%s instance matching query does '
+src.database.models.GroupDoesNotExist: <Model: Group> instance matching query does not exist:
+SQL: SELECT "t1"."id", "t1"."chat_id", "t1"."name" FROM "group" AS "t1" WHERE (("t1"."chat_id" = ?) AND ("t1"."name" IS ?)) LIMIT ? OFFSET ?
+Params: [-961912701, None, 1, 0]
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 955, in infinity_polling
+    self.polling(non_stop=True, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1043, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1118, in __threaded_polling
+    raise e
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1074, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 148, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 91, in run
+    task(*args, **kwargs)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 6428, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\src\bot.py", line 68, in get_text_messages
+    group: models.Group = models.Group.get_or_create(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 6673, in get_or_create
+    raise exc
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 6668, in get_or_create
+    return cls.create(**kwargs), True
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 6537, in create
+    inst.save(force_insert=True)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 6747, in save
+    pk = self.insert(**field_dict).execute()
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 1962, in inner
+    return method(self, database, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 2033, in execute
+    return self._execute(database)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 2838, in _execute
+    return super(Insert, self)._execute(database)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 2551, in _execute
+    cursor = database.execute(self)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3244, in execute
+    return self.execute_sql(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3234, in execute_sql
+    with __exception_wrapper__:
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3010, in __exit__
+    reraise(new_type, new_type(exc_value, *exc_args), traceback)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 192, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3236, in execute_sql
+    cursor.execute(sql, params or ())
+peewee.IntegrityError: NOT NULL constraint failed: group.name
+
+(08:03:2023 01:52:50) [ERROR] Infinity polling: polling exited
+(08:03:2023 01:52:50) [ERROR] Break infinity polling
+(08:03:2023 01:52:52) [INFO] Navnica : s
+(08:03:2023 02:00:29) [ERROR] Infinity polling: polling exited
+(08:03:2023 02:00:29) [ERROR] Break infinity polling
+(08:03:2023 02:00:33) [INFO] Navnica : s
+(08:03:2023 02:00:33) [ERROR] Infinity polling exception: no such column: t1.title
+(08:03:2023 02:00:33) [ERROR] Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3236, in execute_sql
+    cursor.execute(sql, params or ())
+sqlite3.OperationalError: no such column: t1.title
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 955, in infinity_polling
+    self.polling(non_stop=True, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1043, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1118, in __threaded_polling
+    raise e
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1074, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 148, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 91, in run
+    task(*args, **kwargs)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 6428, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\src\bot.py", line 60, in on_admin_message
+    reply_markup=keyboards.group_list_generate()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\src\keyboards.py", line 35, in group_list_generate
+    [
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 7067, in __iter__
+    self.execute()
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 1962, in inner
+    return method(self, database, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 2033, in execute
+    return self._execute(database)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 2206, in _execute
+    cursor = database.execute(self)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3244, in execute
+    return self.execute_sql(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3234, in execute_sql
+    with __exception_wrapper__:
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3010, in __exit__
+    reraise(new_type, new_type(exc_value, *exc_args), traceback)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 192, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3236, in execute_sql
+    cursor.execute(sql, params or ())
+peewee.OperationalError: no such column: t1.title
+
+(08:03:2023 02:02:16) [INFO] Navnica : s
+(08:03:2023 02:02:19) [INFO] Navnica : s
+(08:03:2023 02:02:27) [INFO] Navnica : d
+(08:03:2023 02:02:32) [INFO] Navnica : s
+(08:03:2023 02:03:58) [ERROR] Infinity polling: polling exited
+(08:03:2023 02:03:58) [ERROR] Break infinity polling
+(08:03:2023 02:04:02) [INFO] Navnica : s
+(08:03:2023 02:05:37) [ERROR] Infinity polling: polling exited
+(08:03:2023 02:05:37) [ERROR] Break infinity polling
+(08:03:2023 02:05:38) [INFO] Navnica : t
+(08:03:2023 02:05:40) [ERROR] Infinity polling exception: 'str' object has no attribute 'startwith'
+(08:03:2023 02:05:40) [ERROR] Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 955, in infinity_polling
+    self.polling(non_stop=True, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1043, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1118, in __threaded_polling
+    raise e
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1074, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 148, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 91, in run
+    task(*args, **kwargs)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 6424, in _run_middlewares_and_handler
+    if self._test_message_handler(handler, message):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 6338, in _test_message_handler
+    if not self._test_filter(message_filter, filter_value, message):
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 6379, in _test_filter
+    return filter_value(message)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\src\bot.py", line 74, in <lambda>
+    @bot.callback_query_handler(func=lambda call: call.data.startwith('group_'))
+                                                  ^^^^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'startwith'
+
+(08:03:2023 02:06:29) [ERROR] Infinity polling: polling exited
+(08:03:2023 02:06:29) [ERROR] Break infinity polling
+(08:03:2023 02:07:53) [ERROR] Infinity polling: polling exited
+(08:03:2023 02:07:53) [ERROR] Break infinity polling
+(08:03:2023 02:07:56) [INFO] Navnica : s
+(08:03:2023 02:08:24) [ERROR] Infinity polling: polling exited
+(08:03:2023 02:08:24) [ERROR] Break infinity polling
+(08:03:2023 02:08:25) [ERROR] Infinity polling exception: 'CallbackQuery' object has no attribute 'callback_data'
+(08:03:2023 02:08:25) [ERROR] Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 955, in infinity_polling
+    self.polling(non_stop=True, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1043, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1118, in __threaded_polling
+    raise e
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1074, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 148, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 91, in run
+    task(*args, **kwargs)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 6424, in _run_middlewares_and_handler
+    if self._test_message_handler(handler, message):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 6338, in _test_message_handler
+    if not self._test_filter(message_filter, filter_value, message):
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 6379, in _test_filter
+    return filter_value(message)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\src\bot.py", line 74, in <lambda>
+    @bot.callback_query_handler(func=lambda call: call.callback_data.startswith('group_'))
+                                                  ^^^^^^^^^^^^^^^^^^
+AttributeError: 'CallbackQuery' object has no attribute 'callback_data'
+
