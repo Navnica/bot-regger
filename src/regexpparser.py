@@ -1,7 +1,7 @@
 import re
 from telebot.types import Message
 from telebot import TeleBot
-import models
+from database import models
 import keyboards
 import datetime
 
@@ -83,7 +83,6 @@ class RegexpParser:
             t_message=t_message,
             time_delete=correct_time_delete
         ).save()
-
 
         return None
 
