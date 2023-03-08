@@ -602,3 +602,1018 @@ Traceback (most recent call last):
                                                   ^^^^^^^^^^^^^^^^^^
 AttributeError: 'CallbackQuery' object has no attribute 'callback_data'
 
+(08:03:2023 12:52:38) [INFO] Navnica : s
+(08:03:2023 12:52:41) [ERROR] Infinity polling exception: <Model: Group> instance matching query does not exist:
+SQL: SELECT "t1"."id", "t1"."chat_id", "t1"."title" FROM "group" AS "t1" WHERE ("t1"."chat_id" = ?) LIMIT ? OFFSET ?
+Params: ['list_back', 1, 0]
+(08:03:2023 12:52:41) [ERROR] Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 7077, in get
+    return clone.execute(database)[0]
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 4441, in __getitem__
+    return self.row_cache[item]
+           ~~~~~~~~~~~~~~^^^^^^
+IndexError: list index out of range
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 955, in infinity_polling
+    self.polling(non_stop=True, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1043, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1118, in __threaded_polling
+    raise e
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1074, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 148, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 91, in run
+    task(*args, **kwargs)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 6428, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\src\bot.py", line 77, in on_group_select
+    group: models.Group = models.Group.get(models.Group.chat_id == call.data[6:])
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 6629, in get
+    return sq.get()
+           ^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 7080, in get
+    raise self.model.DoesNotExist('%s instance matching query does '
+src.database.models.GroupDoesNotExist: <Model: Group> instance matching query does not exist:
+SQL: SELECT "t1"."id", "t1"."chat_id", "t1"."title" FROM "group" AS "t1" WHERE ("t1"."chat_id" = ?) LIMIT ? OFFSET ?
+Params: ['list_back', 1, 0]
+
+(08:03:2023 13:03:35) [INFO] Navnica : f
+(08:03:2023 13:03:45) [ERROR] Infinity polling exception: <Model: Group> instance matching query does not exist:
+SQL: SELECT "t1"."id", "t1"."chat_id", "t1"."title", "t1"."type" FROM "group" AS "t1" WHERE ("t1"."chat_id" = ?) LIMIT ? OFFSET ?
+Params: ['list_back', 1, 0]
+(08:03:2023 13:03:45) [ERROR] Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 7077, in get
+    return clone.execute(database)[0]
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 4441, in __getitem__
+    return self.row_cache[item]
+           ~~~~~~~~~~~~~~^^^^^^
+IndexError: list index out of range
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 955, in infinity_polling
+    self.polling(non_stop=True, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1043, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1118, in __threaded_polling
+    raise e
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1074, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 148, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 91, in run
+    task(*args, **kwargs)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 6428, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\src\bot.py", line 78, in on_group_select
+    group: models.Group = models.Group.get(models.Group.chat_id == call.data[6:])
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 6629, in get
+    return sq.get()
+           ^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 7080, in get
+    raise self.model.DoesNotExist('%s instance matching query does '
+src.database.models.GroupDoesNotExist: <Model: Group> instance matching query does not exist:
+SQL: SELECT "t1"."id", "t1"."chat_id", "t1"."title", "t1"."type" FROM "group" AS "t1" WHERE ("t1"."chat_id" = ?) LIMIT ? OFFSET ?
+Params: ['list_back', 1, 0]
+
+(08:03:2023 13:03:57) [ERROR] Infinity polling: polling exited
+(08:03:2023 13:03:57) [ERROR] Break infinity polling
+(08:03:2023 13:04:22) [INFO] Navnica : ds
+(08:03:2023 13:04:26) [INFO] Navnica : n
+(08:03:2023 13:04:42) [ERROR] Infinity polling: polling exited
+(08:03:2023 13:04:42) [ERROR] Break infinity polling
+(08:03:2023 13:07:27) [ERROR] Infinity polling: polling exited
+(08:03:2023 13:07:27) [ERROR] Break infinity polling
+(08:03:2023 14:00:26) [INFO] Navnica : f
+(08:03:2023 14:00:31) [INFO] Navnica : f
+(08:03:2023 14:00:34) [INFO] Navnica : f
+(08:03:2023 14:00:49) [ERROR] Infinity polling: polling exited
+(08:03:2023 14:00:49) [ERROR] Break infinity polling
+(08:03:2023 14:00:51) [INFO] Navnica : f
+(08:03:2023 14:01:39) [INFO] Navnica : f
+(08:03:2023 14:04:39) [ERROR] Infinity polling: polling exited
+(08:03:2023 14:04:39) [ERROR] Break infinity polling
+(08:03:2023 14:04:41) [INFO] Navnica : g
+(08:03:2023 14:06:25) [ERROR] Infinity polling: polling exited
+(08:03:2023 14:06:25) [ERROR] Break infinity polling
+(08:03:2023 14:06:26) [INFO] Navnica : s
+(08:03:2023 14:08:52) [ERROR] Infinity polling exception: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=25)
+(08:03:2023 14:08:52) [ERROR] Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\urllib3\connectionpool.py", line 449, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\urllib3\connectionpool.py", line 444, in _make_request
+    httplib_response = conn.getresponse()
+                       ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\AppData\Local\Programs\Python\Python311\Lib\http\client.py", line 1374, in getresponse
+    response.begin()
+  File "C:\Users\Navnica\AppData\Local\Programs\Python\Python311\Lib\http\client.py", line 318, in begin
+    version, status, reason = self._read_status()
+                              ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\AppData\Local\Programs\Python\Python311\Lib\http\client.py", line 279, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\AppData\Local\Programs\Python\Python311\Lib\socket.py", line 706, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\AppData\Local\Programs\Python\Python311\Lib\ssl.py", line 1278, in recv_into
+    return self.read(nbytes, buffer)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\AppData\Local\Programs\Python\Python311\Lib\ssl.py", line 1134, in read
+    return self._sslobj.read(len, buffer)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TimeoutError: The read operation timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\requests\adapters.py", line 489, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\urllib3\util\retry.py", line 550, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\urllib3\packages\six.py", line 770, in reraise
+    raise value
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\urllib3\connectionpool.py", line 703, in urlopen
+    httplib_response = self._make_request(
+                       ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\urllib3\connectionpool.py", line 451, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\urllib3\connectionpool.py", line 340, in _raise_timeout
+    raise ReadTimeoutError(
+urllib3.exceptions.ReadTimeoutError: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=25)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 955, in infinity_polling
+    self.polling(non_stop=True, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1043, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1118, in __threaded_polling
+    raise e
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1073, in __threaded_polling
+    polling_thread.raise_exceptions()
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 109, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 91, in run
+    task(*args, **kwargs)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 649, in __retrieve_updates
+    updates = self.get_updates(offset=(self.last_update_id + 1),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 623, in get_updates
+    json_updates = apihelper.get_updates(self.token, offset, limit, timeout, allowed_updates, long_polling_timeout)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\apihelper.py", line 321, in get_updates
+    return _make_request(token, method_url, params=payload)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\apihelper.py", line 156, in _make_request
+    result = _get_req_session().request(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\requests\sessions.py", line 587, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\requests\sessions.py", line 701, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\requests\adapters.py", line 578, in send
+    raise ReadTimeout(e, request=request)
+requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=25)
+
+(08:03:2023 14:09:04) [ERROR] Infinity polling: polling exited
+(08:03:2023 14:09:04) [ERROR] Break infinity polling
+(08:03:2023 14:19:49) [INFO] Navnica : f
+(08:03:2023 14:19:49) [INFO] Navnica : sf
+(08:03:2023 14:19:53) [INFO] Navnica : d
+(08:03:2023 14:30:54) [ERROR] Infinity polling: polling exited
+(08:03:2023 14:30:54) [ERROR] Break infinity polling
+(08:03:2023 14:30:55) [INFO] Navnica : f
+(08:03:2023 14:31:01) [INFO] Navnica : f
+(08:03:2023 14:31:03) [ERROR] Infinity polling exception: replace expected at least 2 arguments, got 1
+(08:03:2023 14:31:03) [ERROR] Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 955, in infinity_polling
+    self.polling(non_stop=True, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1043, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1118, in __threaded_polling
+    raise e
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1074, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 148, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 91, in run
+    task(*args, **kwargs)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 6428, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\src\bot.py", line 77, in on_group_select
+    group: models.Group = models.Group.get(models.Group.chat_id == call.data.replace('group_list_for_'), '')
+                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: replace expected at least 2 arguments, got 1
+
+(08:03:2023 14:31:26) [ERROR] Infinity polling: polling exited
+(08:03:2023 14:31:26) [ERROR] Break infinity polling
+(08:03:2023 14:33:58) [ERROR] Infinity polling: polling exited
+(08:03:2023 14:33:58) [ERROR] Break infinity polling
+(08:03:2023 14:34:00) [INFO] Navnica : d
+(08:03:2023 14:34:02) [ERROR] Threaded polling exception: A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: chat_id is empty
+(08:03:2023 14:34:02) [ERROR] Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1074, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 148, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 91, in run
+    task(*args, **kwargs)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 6428, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\src\bot.py", line 79, in on_group_select
+    bot.edit_message_text(
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 3679, in edit_message_text
+    result = apihelper.edit_message_text(self.token, text, chat_id, message_id, inline_message_id, parse_mode,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\apihelper.py", line 1269, in edit_message_text
+    return _make_request(token, method_url, params=payload, method='post')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\apihelper.py", line 162, in _make_request
+    json_result = _check_result(method_name, result)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\apihelper.py", line 189, in _check_result
+    raise ApiTelegramException(method_name, result, result_json)
+telebot.apihelper.ApiTelegramException: A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: chat_id is empty
+
+(08:03:2023 14:34:37) [ERROR] Infinity polling: polling exited
+(08:03:2023 14:34:37) [ERROR] Break infinity polling
+(08:03:2023 14:34:39) [INFO] Navnica : f
+(08:03:2023 14:35:07) [ERROR] Infinity polling: polling exited
+(08:03:2023 14:35:07) [ERROR] Break infinity polling
+(08:03:2023 14:35:09) [INFO] Navnica : f
+(08:03:2023 14:36:02) [ERROR] Infinity polling: polling exited
+(08:03:2023 14:36:02) [ERROR] Break infinity polling
+(08:03:2023 14:36:05) [INFO] Navnica : f
+(08:03:2023 14:36:26) [ERROR] Infinity polling: polling exited
+(08:03:2023 14:36:26) [ERROR] Break infinity polling
+(08:03:2023 14:36:28) [INFO] Navnica : f
+(08:03:2023 14:38:21) [ERROR] Infinity polling: polling exited
+(08:03:2023 14:38:21) [ERROR] Break infinity polling
+(08:03:2023 14:38:23) [INFO] Navnica : f
+(08:03:2023 15:09:37) [ERROR] Infinity polling exception: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=25)
+(08:03:2023 15:09:37) [ERROR] Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\urllib3\connectionpool.py", line 449, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\urllib3\connectionpool.py", line 444, in _make_request
+    httplib_response = conn.getresponse()
+                       ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\AppData\Local\Programs\Python\Python311\Lib\http\client.py", line 1374, in getresponse
+    response.begin()
+  File "C:\Users\Navnica\AppData\Local\Programs\Python\Python311\Lib\http\client.py", line 318, in begin
+    version, status, reason = self._read_status()
+                              ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\AppData\Local\Programs\Python\Python311\Lib\http\client.py", line 279, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\AppData\Local\Programs\Python\Python311\Lib\socket.py", line 706, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\AppData\Local\Programs\Python\Python311\Lib\ssl.py", line 1278, in recv_into
+    return self.read(nbytes, buffer)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\AppData\Local\Programs\Python\Python311\Lib\ssl.py", line 1134, in read
+    return self._sslobj.read(len, buffer)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TimeoutError: The read operation timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\requests\adapters.py", line 489, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\urllib3\util\retry.py", line 550, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\urllib3\packages\six.py", line 770, in reraise
+    raise value
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\urllib3\connectionpool.py", line 703, in urlopen
+    httplib_response = self._make_request(
+                       ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\urllib3\connectionpool.py", line 451, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\urllib3\connectionpool.py", line 340, in _raise_timeout
+    raise ReadTimeoutError(
+urllib3.exceptions.ReadTimeoutError: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=25)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 955, in infinity_polling
+    self.polling(non_stop=True, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1043, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1118, in __threaded_polling
+    raise e
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1073, in __threaded_polling
+    polling_thread.raise_exceptions()
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 109, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 91, in run
+    task(*args, **kwargs)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 649, in __retrieve_updates
+    updates = self.get_updates(offset=(self.last_update_id + 1),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 623, in get_updates
+    json_updates = apihelper.get_updates(self.token, offset, limit, timeout, allowed_updates, long_polling_timeout)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\apihelper.py", line 321, in get_updates
+    return _make_request(token, method_url, params=payload)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\apihelper.py", line 156, in _make_request
+    result = _get_req_session().request(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\requests\sessions.py", line 587, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\requests\sessions.py", line 701, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\requests\adapters.py", line 578, in send
+    raise ReadTimeout(e, request=request)
+requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=25)
+
+(08:03:2023 15:09:40) [ERROR] Infinity polling exception: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot6215861349:AAEsR-mkulmBD_KoMKxeXJATm304czfuDgA/getUpdates?offset=939099070&timeout=20 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: EE certificate key too weak (_ssl.c:992)')))
+(08:03:2023 15:09:40) [ERROR] Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\urllib3\connectionpool.py", line 703, in urlopen
+    httplib_response = self._make_request(
+                       ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\urllib3\connectionpool.py", line 386, in _make_request
+    self._validate_conn(conn)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\urllib3\connectionpool.py", line 1042, in _validate_conn
+    conn.connect()
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\urllib3\connection.py", line 414, in connect
+    self.sock = ssl_wrap_socket(
+                ^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\urllib3\util\ssl_.py", line 449, in ssl_wrap_socket
+    ssl_sock = _ssl_wrap_socket_impl(
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\urllib3\util\ssl_.py", line 493, in _ssl_wrap_socket_impl
+    return ssl_context.wrap_socket(sock, server_hostname=server_hostname)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\AppData\Local\Programs\Python\Python311\Lib\ssl.py", line 517, in wrap_socket
+    return self.sslsocket_class._create(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\AppData\Local\Programs\Python\Python311\Lib\ssl.py", line 1075, in _create
+    self.do_handshake()
+  File "C:\Users\Navnica\AppData\Local\Programs\Python\Python311\Lib\ssl.py", line 1346, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLCertVerificationError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: EE certificate key too weak (_ssl.c:992)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\requests\adapters.py", line 489, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\urllib3\util\retry.py", line 592, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot6215861349:AAEsR-mkulmBD_KoMKxeXJATm304czfuDgA/getUpdates?offset=939099070&timeout=20 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: EE certificate key too weak (_ssl.c:992)')))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 955, in infinity_polling
+    self.polling(non_stop=True, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1043, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1118, in __threaded_polling
+    raise e
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1073, in __threaded_polling
+    polling_thread.raise_exceptions()
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 109, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 91, in run
+    task(*args, **kwargs)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 649, in __retrieve_updates
+    updates = self.get_updates(offset=(self.last_update_id + 1),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 623, in get_updates
+    json_updates = apihelper.get_updates(self.token, offset, limit, timeout, allowed_updates, long_polling_timeout)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\apihelper.py", line 321, in get_updates
+    return _make_request(token, method_url, params=payload)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\apihelper.py", line 156, in _make_request
+    result = _get_req_session().request(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\requests\sessions.py", line 587, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\requests\sessions.py", line 701, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\requests\adapters.py", line 563, in send
+    raise SSLError(e, request=request)
+requests.exceptions.SSLError: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot6215861349:AAEsR-mkulmBD_KoMKxeXJATm304czfuDgA/getUpdates?offset=939099070&timeout=20 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: EE certificate key too weak (_ssl.c:992)')))
+
+(08:03:2023 15:09:45) [ERROR] Infinity polling exception: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot6215861349:AAEsR-mkulmBD_KoMKxeXJATm304czfuDgA/getUpdates?offset=939099070&timeout=20 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: EE certificate key too weak (_ssl.c:992)')))
+(08:03:2023 15:09:45) [ERROR] Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\urllib3\connectionpool.py", line 703, in urlopen
+    httplib_response = self._make_request(
+                       ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\urllib3\connectionpool.py", line 386, in _make_request
+    self._validate_conn(conn)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\urllib3\connectionpool.py", line 1042, in _validate_conn
+    conn.connect()
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\urllib3\connection.py", line 414, in connect
+    self.sock = ssl_wrap_socket(
+                ^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\urllib3\util\ssl_.py", line 449, in ssl_wrap_socket
+    ssl_sock = _ssl_wrap_socket_impl(
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\urllib3\util\ssl_.py", line 493, in _ssl_wrap_socket_impl
+    return ssl_context.wrap_socket(sock, server_hostname=server_hostname)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\AppData\Local\Programs\Python\Python311\Lib\ssl.py", line 517, in wrap_socket
+    return self.sslsocket_class._create(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\AppData\Local\Programs\Python\Python311\Lib\ssl.py", line 1075, in _create
+    self.do_handshake()
+  File "C:\Users\Navnica\AppData\Local\Programs\Python\Python311\Lib\ssl.py", line 1346, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLCertVerificationError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: EE certificate key too weak (_ssl.c:992)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\requests\adapters.py", line 489, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\urllib3\util\retry.py", line 592, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot6215861349:AAEsR-mkulmBD_KoMKxeXJATm304czfuDgA/getUpdates?offset=939099070&timeout=20 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: EE certificate key too weak (_ssl.c:992)')))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 955, in infinity_polling
+    self.polling(non_stop=True, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1043, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1118, in __threaded_polling
+    raise e
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1073, in __threaded_polling
+    polling_thread.raise_exceptions()
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 109, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 91, in run
+    task(*args, **kwargs)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 649, in __retrieve_updates
+    updates = self.get_updates(offset=(self.last_update_id + 1),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 623, in get_updates
+    json_updates = apihelper.get_updates(self.token, offset, limit, timeout, allowed_updates, long_polling_timeout)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\apihelper.py", line 321, in get_updates
+    return _make_request(token, method_url, params=payload)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\apihelper.py", line 156, in _make_request
+    result = _get_req_session().request(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\requests\sessions.py", line 587, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\requests\sessions.py", line 701, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\requests\adapters.py", line 563, in send
+    raise SSLError(e, request=request)
+requests.exceptions.SSLError: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot6215861349:AAEsR-mkulmBD_KoMKxeXJATm304czfuDgA/getUpdates?offset=939099070&timeout=20 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: EE certificate key too weak (_ssl.c:992)')))
+
+(08:03:2023 15:20:00) [INFO] Navnica : f
+(08:03:2023 15:23:59) [ERROR] Infinity polling: polling exited
+(08:03:2023 15:23:59) [ERROR] Break infinity polling
+(08:03:2023 15:24:04) [INFO] Navnica : f
+(08:03:2023 15:24:14) [INFO] Navnica : ,
+(08:03:2023 15:31:56) [ERROR] Infinity polling: polling exited
+(08:03:2023 15:31:56) [ERROR] Break infinity polling
+(08:03:2023 15:35:36) [INFO] Navnica : sd
+(08:03:2023 15:35:42) [INFO] Navnica : s
+(08:03:2023 15:35:42) [ERROR] Infinity polling exception: no such table: messagethread
+(08:03:2023 15:35:42) [ERROR] Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3236, in execute_sql
+    cursor.execute(sql, params or ())
+sqlite3.OperationalError: no such table: messagethread
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 955, in infinity_polling
+    self.polling(non_stop=True, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1043, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1118, in __threaded_polling
+    raise e
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1074, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 148, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 91, in run
+    task(*args, **kwargs)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 6428, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\src\bot.py", line 74, in get_text_messages
+    message_thread: models.MessageThread = models.MessageThread.get_or_create(
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 6662, in get_or_create
+    return query.get(), False
+           ^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 7077, in get
+    return clone.execute(database)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 1962, in inner
+    return method(self, database, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 2033, in execute
+    return self._execute(database)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 2206, in _execute
+    cursor = database.execute(self)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3244, in execute
+    return self.execute_sql(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3234, in execute_sql
+    with __exception_wrapper__:
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3010, in __exit__
+    reraise(new_type, new_type(exc_value, *exc_args), traceback)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 192, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3236, in execute_sql
+    cursor.execute(sql, params or ())
+peewee.OperationalError: no such table: messagethread
+
+(08:03:2023 15:36:11) [ERROR] Infinity polling: polling exited
+(08:03:2023 15:36:11) [ERROR] Break infinity polling
+(08:03:2023 15:36:45) [ERROR] Infinity polling: polling exited
+(08:03:2023 15:36:45) [ERROR] Break infinity polling
+(08:03:2023 15:36:57) [INFO] Navnica : g
+(08:03:2023 15:36:57) [ERROR] Infinity polling exception: row value misused
+(08:03:2023 15:36:57) [ERROR] Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3236, in execute_sql
+    cursor.execute(sql, params or ())
+sqlite3.OperationalError: row value misused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 955, in infinity_polling
+    self.polling(non_stop=True, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1043, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1118, in __threaded_polling
+    raise e
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1074, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 148, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 91, in run
+    task(*args, **kwargs)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 6428, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\src\bot.py", line 74, in get_text_messages
+    message_thread: models.MessageThread = models.MessageThread.get_or_create(
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 6662, in get_or_create
+    return query.get(), False
+           ^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 7077, in get
+    return clone.execute(database)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 1962, in inner
+    return method(self, database, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 2033, in execute
+    return self._execute(database)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 2206, in _execute
+    cursor = database.execute(self)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3244, in execute
+    return self.execute_sql(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3234, in execute_sql
+    with __exception_wrapper__:
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3010, in __exit__
+    reraise(new_type, new_type(exc_value, *exc_args), traceback)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 192, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3236, in execute_sql
+    cursor.execute(sql, params or ())
+peewee.OperationalError: row value misused
+
+(08:03:2023 15:37:59) [ERROR] Infinity polling: polling exited
+(08:03:2023 15:37:59) [ERROR] Break infinity polling
+(08:03:2023 15:38:03) [INFO] Navnica : g
+(08:03:2023 15:38:04) [ERROR] Infinity polling exception: row value misused
+(08:03:2023 15:38:04) [ERROR] Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3236, in execute_sql
+    cursor.execute(sql, params or ())
+sqlite3.OperationalError: row value misused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 955, in infinity_polling
+    self.polling(non_stop=True, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1043, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1118, in __threaded_polling
+    raise e
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1074, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 148, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 91, in run
+    task(*args, **kwargs)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 6428, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\src\bot.py", line 74, in get_text_messages
+    message_thread: models.MessageThread = models.MessageThread.get_or_create(
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 6662, in get_or_create
+    return query.get(), False
+           ^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 7077, in get
+    return clone.execute(database)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 1962, in inner
+    return method(self, database, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 2033, in execute
+    return self._execute(database)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 2206, in _execute
+    cursor = database.execute(self)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3244, in execute
+    return self.execute_sql(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3234, in execute_sql
+    with __exception_wrapper__:
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3010, in __exit__
+    reraise(new_type, new_type(exc_value, *exc_args), traceback)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 192, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3236, in execute_sql
+    cursor.execute(sql, params or ())
+peewee.OperationalError: row value misused
+
+(08:03:2023 15:38:36) [ERROR] Infinity polling: polling exited
+(08:03:2023 15:38:36) [ERROR] Break infinity polling
+(08:03:2023 15:38:39) [INFO] Navnica : f
+(08:03:2023 15:38:39) [ERROR] Infinity polling exception: row value misused
+(08:03:2023 15:38:39) [ERROR] Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3236, in execute_sql
+    cursor.execute(sql, params or ())
+sqlite3.OperationalError: row value misused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 955, in infinity_polling
+    self.polling(non_stop=True, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1043, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1118, in __threaded_polling
+    raise e
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1074, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 148, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 91, in run
+    task(*args, **kwargs)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 6428, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\src\bot.py", line 74, in get_text_messages
+    message_thread: models.MessageThread = models.MessageThread.get_or_create(
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 6662, in get_or_create
+    return query.get(), False
+           ^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 7077, in get
+    return clone.execute(database)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 1962, in inner
+    return method(self, database, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 2033, in execute
+    return self._execute(database)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 2206, in _execute
+    cursor = database.execute(self)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3244, in execute
+    return self.execute_sql(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3234, in execute_sql
+    with __exception_wrapper__:
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3010, in __exit__
+    reraise(new_type, new_type(exc_value, *exc_args), traceback)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 192, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3236, in execute_sql
+    cursor.execute(sql, params or ())
+peewee.OperationalError: row value misused
+
+(08:03:2023 15:38:51) [ERROR] Infinity polling: polling exited
+(08:03:2023 15:38:51) [ERROR] Break infinity polling
+(08:03:2023 15:38:57) [INFO] Navnica : v
+(08:03:2023 15:40:36) [ERROR] Infinity polling: polling exited
+(08:03:2023 15:40:36) [ERROR] Break infinity polling
+(08:03:2023 15:40:39) [INFO] Navnica : fasfsa346
+(08:03:2023 15:40:39) [ERROR] Infinity polling exception: row value misused
+(08:03:2023 15:40:39) [ERROR] Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3236, in execute_sql
+    cursor.execute(sql, params or ())
+sqlite3.OperationalError: row value misused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 955, in infinity_polling
+    self.polling(non_stop=True, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1043, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1118, in __threaded_polling
+    raise e
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1074, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 148, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 91, in run
+    task(*args, **kwargs)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 6428, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\src\bot.py", line 76, in get_text_messages
+    message_thread: models.MessageThread = models.MessageThread.get_or_create(
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 6662, in get_or_create
+    return query.get(), False
+           ^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 7077, in get
+    return clone.execute(database)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 1962, in inner
+    return method(self, database, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 2033, in execute
+    return self._execute(database)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 2206, in _execute
+    cursor = database.execute(self)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3244, in execute
+    return self.execute_sql(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3234, in execute_sql
+    with __exception_wrapper__:
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3010, in __exit__
+    reraise(new_type, new_type(exc_value, *exc_args), traceback)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 192, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3236, in execute_sql
+    cursor.execute(sql, params or ())
+peewee.OperationalError: row value misused
+
+(08:03:2023 15:40:48) [ERROR] Infinity polling: polling exited
+(08:03:2023 15:40:48) [ERROR] Break infinity polling
+(08:03:2023 15:40:50) [INFO] Navnica : 214
+(08:03:2023 15:42:53) [ERROR] Infinity polling: polling exited
+(08:03:2023 15:42:53) [ERROR] Break infinity polling
+(08:03:2023 15:42:54) [INFO] Navnica : 4
+(08:03:2023 15:42:54) [ERROR] Infinity polling exception: row value misused
+(08:03:2023 15:42:54) [ERROR] Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3236, in execute_sql
+    cursor.execute(sql, params or ())
+sqlite3.OperationalError: row value misused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 955, in infinity_polling
+    self.polling(non_stop=True, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1043, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1118, in __threaded_polling
+    raise e
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1074, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 148, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 91, in run
+    task(*args, **kwargs)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 6428, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\src\bot.py", line 74, in get_text_messages
+    message_thread: models.MessageThread = models.MessageThread.get_or_create(
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 6662, in get_or_create
+    return query.get(), False
+           ^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 7077, in get
+    return clone.execute(database)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 1962, in inner
+    return method(self, database, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 2033, in execute
+    return self._execute(database)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 2206, in _execute
+    cursor = database.execute(self)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3244, in execute
+    return self.execute_sql(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3234, in execute_sql
+    with __exception_wrapper__:
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3010, in __exit__
+    reraise(new_type, new_type(exc_value, *exc_args), traceback)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 192, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 3236, in execute_sql
+    cursor.execute(sql, params or ())
+peewee.OperationalError: row value misused
+
+(08:03:2023 15:43:03) [ERROR] Infinity polling: polling exited
+(08:03:2023 15:43:03) [ERROR] Break infinity polling
+(08:03:2023 15:43:05) [INFO] Navnica : 2
+(08:03:2023 15:43:05) [ERROR] Infinity polling exception: 'tuple' object has no attribute 'id'
+(08:03:2023 15:43:05) [ERROR] Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 955, in infinity_polling
+    self.polling(non_stop=True, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1043, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1118, in __threaded_polling
+    raise e
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1074, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 148, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 91, in run
+    task(*args, **kwargs)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 6428, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\src\bot.py", line 75, in get_text_messages
+    group=group.id,
+          ^^^^^^^^
+AttributeError: 'tuple' object has no attribute 'id'
+
+(08:03:2023 15:44:17) [ERROR] Infinity polling: polling exited
+(08:03:2023 15:44:17) [ERROR] Break infinity polling
+(08:03:2023 15:44:19) [INFO] Navnica : fa
+(08:03:2023 15:44:47) [ERROR] Infinity polling: polling exited
+(08:03:2023 15:44:47) [ERROR] Break infinity polling
+(08:03:2023 15:44:52) [INFO] Navnica : t
+(08:03:2023 15:57:29) [INFO] Navnica : d
+(08:03:2023 15:57:33) [ERROR] Infinity polling exception: Query.where() got an unexpected keyword argument 'group'
+(08:03:2023 15:57:33) [ERROR] Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 955, in infinity_polling
+    self.polling(non_stop=True, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1043, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1118, in __threaded_polling
+    raise e
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1074, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 148, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 91, in run
+    task(*args, **kwargs)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 6428, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\src\bot.py", line 113, in on_create_rule_click
+    reply_markup=keyboards.threads_list_generate(group)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\src\keyboards.py", line 93, in threads_list_generate
+    for thread in models.MessageThread.select().where(group=group):
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\peewee.py", line 733, in inner
+    method(clone, *args, **kwargs)
+TypeError: Query.where() got an unexpected keyword argument 'group'
+
+(08:03:2023 15:57:51) [ERROR] Infinity polling: polling exited
+(08:03:2023 15:57:51) [ERROR] Break infinity polling
+(08:03:2023 15:57:54) [ERROR] Threaded polling exception: A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: can't parse inline keyboard button: Field "text" must be of type String
+(08:03:2023 15:57:54) [ERROR] Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1074, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 148, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 91, in run
+    task(*args, **kwargs)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 6428, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\src\bot.py", line 109, in on_create_rule_click
+    bot.edit_message_text(
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 3679, in edit_message_text
+    result = apihelper.edit_message_text(self.token, text, chat_id, message_id, inline_message_id, parse_mode,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\apihelper.py", line 1269, in edit_message_text
+    return _make_request(token, method_url, params=payload, method='post')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\apihelper.py", line 162, in _make_request
+    json_result = _check_result(method_name, result)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\apihelper.py", line 189, in _check_result
+    raise ApiTelegramException(method_name, result, result_json)
+telebot.apihelper.ApiTelegramException: A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: can't parse inline keyboard button: Field "text" must be of type String
+
+(08:03:2023 15:57:56) [INFO] Navnica : f
+(08:03:2023 15:57:59) [ERROR] Threaded polling exception: A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: can't parse inline keyboard button: Field "text" must be of type String
+(08:03:2023 15:57:59) [ERROR] Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 1074, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 148, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\util.py", line 91, in run
+    task(*args, **kwargs)
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 6428, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\src\bot.py", line 109, in on_create_rule_click
+    bot.edit_message_text(
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\__init__.py", line 3679, in edit_message_text
+    result = apihelper.edit_message_text(self.token, text, chat_id, message_id, inline_message_id, parse_mode,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\apihelper.py", line 1269, in edit_message_text
+    return _make_request(token, method_url, params=payload, method='post')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\apihelper.py", line 162, in _make_request
+    json_result = _check_result(method_name, result)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Navnica\Desktop\bot-regger\venv\Lib\site-packages\telebot\apihelper.py", line 189, in _check_result
+    raise ApiTelegramException(method_name, result, result_json)
+telebot.apihelper.ApiTelegramException: A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: can't parse inline keyboard button: Field "text" must be of type String
+
+(08:03:2023 15:58:51) [ERROR] Infinity polling: polling exited
+(08:03:2023 15:58:51) [ERROR] Break infinity polling
+(08:03:2023 16:07:21) [ERROR] Infinity polling: polling exited
+(08:03:2023 16:07:21) [ERROR] Break infinity polling
+(08:03:2023 16:07:23) [INFO] Navnica : 1
+(08:03:2023 16:08:00) [ERROR] Infinity polling: polling exited
+(08:03:2023 16:08:00) [ERROR] Break infinity polling
+(08:03:2023 16:16:51) [ERROR] Infinity polling: polling exited
+(08:03:2023 16:16:51) [ERROR] Break infinity polling

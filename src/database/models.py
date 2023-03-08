@@ -16,11 +16,20 @@ class User(BaseModel):
 class Group(BaseModel):
     chat_id = IntegerField(null=False)
     title = CharField(null=False)
+    type = CharField(null=False)
+
+    def get_linked_actions(self) -> list:
+        return [action for action in Action.select().where(Action.chat_id == self)]
+
+
+class MessageThread(BaseModel):
+    group = ForeignKeyField(Group, related_name='group')
+    thread_id = CharField(null=True)
 
 
 class Action(BaseModel):
     chat_id = ForeignKeyField(Group, related_name='group', null=False)
-    message_thread_id = IntegerField(null=True)
+    message_thread_id = ForeignKeyField(MessageThread, null=False)
     regular_expression = CharField(null=False)
     def_name = CharField(null=False)
     text = CharField(null=False)
@@ -35,14 +44,15 @@ class TMessage(BaseModel):
     action = ForeignKeyField(Action, null=True)
 
 
-class AdminMessage(BaseModel):
-    t_message = ForeignKeyField(TMessage, related_name='t_message')
-    user = ForeignKeyField(User, related_name='user')
-
-
 class DeleteList(BaseModel):
     t_message = ForeignKeyField(TMessage, related_name='t_message')
     time_delete = DateTimeField(null=True)
+
+
+class RegexpWaitList(BaseModel):
+    chat = ForeignKeyField(Group)
+    thread = ForeignKeyField(MessageThread)
+    user = ForeignKeyField(User)
 
 
 Action.create_table()
@@ -50,4 +60,5 @@ Group.create_table()
 User.create_table()
 TMessage.create_table()
 DeleteList.create_table()
-AdminMessage.create_table()
+MessageThread.create_table()
+RegexpWaitList.create_table()
