@@ -23,12 +23,12 @@ class Group(BaseModel):
 
 
 class MessageThread(BaseModel):
-    group = ForeignKeyField(Group, related_name='group')
-    thread_id = CharField(null=True)
+    group = ForeignKeyField(Group, related_name='group_thread')
+    thread_id = IntegerField(null=True)
 
 
 class Action(BaseModel):
-    chat_id = ForeignKeyField(Group, related_name='group', null=False)
+    chat_id = ForeignKeyField(Group, related_name='group_action', null=False)
     message_thread_id = ForeignKeyField(MessageThread, null=False)
     regular_expression = CharField(null=False)
     def_name = CharField(null=False)
@@ -37,7 +37,7 @@ class Action(BaseModel):
 
 
 class TMessage(BaseModel):
-    chat_id = ForeignKeyField(Group, related_name='group', null=False)
+    chat = ForeignKeyField(Group, related_name='group_t_message', null=False)
     message_thread_id = IntegerField(null=True)
     message_author = ForeignKeyField(User, related_name='message_author')
     message_id = IntegerField(null=False)
@@ -50,9 +50,10 @@ class DeleteList(BaseModel):
 
 
 class RegexpWaitList(BaseModel):
-    chat = ForeignKeyField(Group)
-    thread = ForeignKeyField(MessageThread)
-    user = ForeignKeyField(User)
+    group = ForeignKeyField(Group, related_name='group_regex', null=False)
+    thread = ForeignKeyField(MessageThread, related_name='thread_regex', null=False)
+    t_message = ForeignKeyField(TMessage, related_name='t_message_regex', null=False)
+    user = ForeignKeyField(User, related_name='user_regex', null=False)
 
 
 Action.create_table()

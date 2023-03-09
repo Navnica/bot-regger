@@ -1,5 +1,5 @@
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
-from src.database import models
+from src.dbworker import DBWorker
 
 yes_no_markup: InlineKeyboardMarkup = InlineKeyboardMarkup(
     [
@@ -17,92 +17,60 @@ yes_no_markup: InlineKeyboardMarkup = InlineKeyboardMarkup(
     ]
 )
 
-admin_menu: InlineKeyboardMarkup = InlineKeyboardMarkup(
-    [
-        [
-            InlineKeyboardButton(
-                text='Список групп',
-                callback_data='group_list'
-            )
-        ]
-    ]
-)
 
-
-def group_list_generate() -> InlineKeyboardMarkup:
+def get_group_list_markup() -> InlineKeyboardMarkup:
     kb: InlineKeyboardMarkup = InlineKeyboardMarkup()
 
-    [
+    for group in DBWorker.GroupManager.get_all_groups():
         kb.add(
             InlineKeyboardButton(
                 text=group.title,
-                callback_data=f'group_list_for_{group.chat_id}'
+                callback_data=f'group_select_{group.id}'
             )
-        ) for group in models.Group.select()
-    ]
-
-    kb.add(
-        InlineKeyboardButton(
-            text='<',
-            callback_data='back_to_admin_menu'
         )
-    )
 
     return kb
 
 
-def group_settings_generate(group: models.Group) -> InlineKeyboardMarkup:
-    kb: InlineKeyboardMarkup = InlineKeyboardMarkup(
-        keyboard=[
-            [
-                InlineKeyboardButton(
-                    text='Существующие правила',
-                    callback_data=f'exists_rules_for_{group.chat_id}'
-                ),
-            ]
-        ],
-    )
-
-    kb.add(
-        InlineKeyboardButton(
-            text='Новое правило',
-            callback_data=f'new_rule_for_{group.chat_id}'
-        ),
-    )
-
-    kb.add(
-        InlineKeyboardButton(
-            text='Сбросить правила',
-            callback_data=f'clear_rules_for_{group.chat_id}'
-        ),
-    )
-
-    kb.add(
-        InlineKeyboardButton(
-            text='<',
-            callback_data='back_to_group_list'
-        )
-    )
-
-    return kb
-
-
-def threads_list_generate(group: models.Group) -> InlineKeyboardMarkup:
+def get_threads_linked_group_by_group_id(group_id: int) -> InlineKeyboardMarkup:
     kb: InlineKeyboardMarkup = InlineKeyboardMarkup()
 
-    for thread in models.MessageThread.select().where(models.MessageThread.group == group):
+    group = DBWorker.GroupManager.get_group_by_id(id_group=group_id)
+    linked_threads = DBWorker.MessageThreadManager.get_all_threads_by_group(group=group)
+
+    for thread in linked_threads:
         kb.add(
             InlineKeyboardButton(
-                text=thread.id,
-                callback_data=f'select_thread_{thread.thread_id}_for_group_{group.chat_id}'
+                text='Main' if not str(thread.thread_id) is None else str(thread.thread_id),
+                callback_data=f'thread_select_{thread.id}'
             )
         )
 
-    kb.add(
-        InlineKeyboardButton(
-            text='<',
-            callback_data='back_to_group_menu'
-        )
+    return kb
+
+
+def get_thread_menu(thread_id: int) -> InlineKeyboardMarkup:
+    kb: InlineKeyboardMarkup = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton(
+                    text='Все правила',
+                    callback_data=f'thread_menu_all_rules_for_thread_{thread_id}'
+                ),
+
+                InlineKeyboardButton(
+                    text='Новое правило',
+                    callback_data=f'thread_menu_new_rule_for_thread_{thread_id}'
+                ),
+
+            ]
+        ]
     )
+
+    kb.row(
+        InlineKeyboardButton(
+            text='Сбросить правила',
+            callback_data=f'thread_menu_clear_rules_for_thread_{thread_id}'
+        ))
 
     return kb

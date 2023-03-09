@@ -5,3 +5,4 @@ venv
 *.db
 .DS_Store
 *.swp
+log.txt

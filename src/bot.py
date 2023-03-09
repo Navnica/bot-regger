@@ -6,6 +6,8 @@ import threading
 import logging
 import sys
 from src import keyboards
+from src.dbworker import DBWorker
+from src import regexpparser
 from src.database import models
 
 logging.basicConfig(
@@ -19,11 +21,11 @@ logging.basicConfig(
 )
 
 bot = telebot.TeleBot(json.load(open('config.json', encoding='utf-8'))['token'])
-bot_instance = models.User.get_or_create(telegram_id=bot.get_me().id, power_level=2)
+#bot_instance = models.User.get_or_create(telegram_id=bot.get_me().id, power_level=2)
 stop = False
 
 
-def message_cleaner():
+def message_cleaner() -> None:
     global stop
     while True:
         if stop: return
@@ -46,84 +48,85 @@ def message_cleaner():
 cleaner = threading.Thread(target=message_cleaner)
 cleaner.start()
 
-
-@bot.message_handler(chat_types=['private'], func=lambda msg: models.User.get_or_create(telegram_id=msg.from_user.id)[0].power_level > 0)  # do not forget change to >1
-def on_admin_message(message: telebot.types.Message) -> None:
-    logging.info(f'{message.from_user.username} : {message.text}')
-
-    user: models.User = models.User.get(telegram_id=message.from_user.id)
-
-    new_message = bot.send_message(
-        chat_id=message.chat.id,
-        text='Выберите пункт меню',
-        reply_markup=keyboards.group_list_generate()
-    )
+"""
+    _____________________________________MESSAGE ZONE_____________________________________
+"""
 
 
+# при любом сообщении в группу
 @bot.message_handler(chat_types=['group', 'supergroup'])
-def get_text_messages(message: telebot.types.Message) -> None:
-    logging.info(f'{message.from_user.username} : {message.text}')
-
-    group: models.Group = models.Group.get_or_create(
+def on_group_message(message: telebot.types.Message):
+    group = DBWorker.GroupManager.get_or_create(
         chat_id=message.chat.id,
         title=message.chat.title,
-        type=message.chat.type
-    )[0]
+        group_type=message.chat.type
+    )
 
-    message_thread: models.MessageThread = models.MessageThread.get_or_create(
+    message_thread = DBWorker.MessageThreadManager.get_or_create(
         group=group,
         thread_id=message.message_thread_id
-    )[0]
-
-
-@bot.callback_query_handler(func=lambda call: call.data.startswith('group_'))
-def on_group_select_click(call: telebot.types.CallbackQuery) -> None:
-    group: models.Group = models.Group.get(
-        models.Group.chat_id == call.data.replace('group_list_for_', '')
     )
 
+
+# при сообщении админа в личку
+@bot.message_handler(
+    chat_types=['private'],
+    func=lambda message: DBWorker.UserManager.user_is_admin(message.from_user.id),
+    commands=['groups']
+)
+def on_private_admin_message(message: telebot.types.Message) -> None:
+    bot.send_message(
+        text='Выберите группу',
+        chat_id=message.chat.id,
+        message_thread_id=message.message_thread_id,
+        reply_markup=keyboards.get_group_list_markup()
+    )
+
+
+"""
+    _____________________________________CALLBACK ZONE_____________________________________
+"""
+
+
+# при выборе группы
+@bot.callback_query_handler(func=lambda call: call.data.startswith('group_select_'))
+def on_select_group_pressed(call: telebot.types.CallbackQuery) -> None:
+    group: int = int(call.data.split('_')[2])
+
     bot.edit_message_text(
+        chat_id=call.message.chat.id,
         message_id=call.message.id,
-        chat_id=call.message.chat.id,
-        text='Menupoint select',
-        reply_markup=keyboards.group_settings_generate(group)
+        text='Ввыберите топик',
+        reply_markup=keyboards.get_threads_linked_group_by_group_id(group)
     )
 
 
-@bot.callback_query_handler(func=lambda call: call.data.startswith('exists_rules_for_'))
-def on_exists_rules_click(call: telebot.types.CallbackQuery) -> None:
-    group: models.Group = models.Group.get(
-        models.Group.chat_id == call.data.replace('exists_rules_for_', '')
-    )
-
-    pass
-
-
-@bot.callback_query_handler(func=lambda call: call.data.startswith('new_rule_for_'))
-def on_create_rule_click(call: telebot.types.CallbackQuery) -> None:
-    group: models.Group = models.Group.get(
-        models.Group.chat_id == call.data.replace('new_rule_for_', '')
-    )
+# при выборе топика
+@bot.callback_query_handler(func=lambda call: call.data.startswith('thread_select_'))
+def on_select_group_pressed(call: telebot.types.CallbackQuery) -> None:
+    thread: int = int(call.data.split('_')[2])
 
     bot.edit_message_text(
         chat_id=call.message.chat.id,
-        message_id=call.message.message_id,
-        text='Thread select',
-        reply_markup=keyboards.threads_list_generate(group)
+        message_id=call.message.id,
+        text='Выберите пункт меню',
+        reply_markup=keyboards.get_thread_menu(thread)
     )
 
 
-@bot.callback_query_handler(func=lambda call: call.data.startswith('select_thread_'))
-def on_thread_select(call: telebot.types.CallbackQuery):
-    call.data = call.data.split('_')
+# при выборе пункта меню в треде
+@bot.callback_query_handler(func=lambda call: call.data)
+def on_menu_thread_pressed(call: telebot.types.CallbackQuery) -> None:
+    thread_id: int = int(call.data.split('_')[-1])
 
-    group: models.Group = models.Group.get(
-        models.Group.chat_id == call.data[5]
-    )
+    if 'all_rules' in call.data:
+        pass
 
-    thread: models.MessageThread = models.MessageThread.get(
-        models.MessageThread.id == call.data[2]
-    )
+    elif 'new_rule' in call.data:
+        pass
+
+    elif 'clear_rules' in call.data:
+        pass
 
 
 def start_poll():
