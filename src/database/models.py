@@ -49,11 +49,10 @@ class DeleteList(BaseModel):
     time_delete = DateTimeField(null=True)
 
 
-class RegexpWaitList(BaseModel):
-    group = ForeignKeyField(Group, related_name='group_regex', null=False)
+class RegexpWait(BaseModel):
     thread = ForeignKeyField(MessageThread, related_name='thread_regex', null=False)
-    t_message = ForeignKeyField(TMessage, related_name='t_message_regex', null=False)
     user = ForeignKeyField(User, related_name='user_regex', null=False)
+    function_name = CharField(null=False)
 
 
 Action.create_table()
@@ -62,4 +61,4 @@ User.create_table()
 TMessage.create_table()
 DeleteList.create_table()
 MessageThread.create_table()
-RegexpWaitList.create_table()
+RegexpWait.create_table()

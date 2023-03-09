@@ -7,7 +7,7 @@ import logging
 import sys
 from src import keyboards
 from src.dbworker import DBWorker
-from src import regexpparser
+from src.regexpparser import RegexpParser
 from src.database import models
 
 logging.basicConfig(
@@ -21,7 +21,7 @@ logging.basicConfig(
 )
 
 bot = telebot.TeleBot(json.load(open('config.json', encoding='utf-8'))['token'])
-#bot_instance = models.User.get_or_create(telegram_id=bot.get_me().id, power_level=2)
+# bot_instance = models.User.get_or_create(telegram_id=bot.get_me().id, power_level=2)
 stop = False
 
 
@@ -83,9 +83,43 @@ def on_private_admin_message(message: telebot.types.Message) -> None:
     )
 
 
+# при сообщении от пользователя, который должен ввести регулярное выражение
+@bot.message_handler(
+    chat_types=['private'],
+    func=lambda message: DBWorker.RegexpWaitManager.user_in_wait_list(message.from_user.id),
+)
+def on_regex_input(message: telebot.types.Message) -> None:
+    if not RegexpParser.regex_correct(message.text):
+        bot.send_message(
+            text='Заданное выражение неверно',
+            chat_id=message.chat.id,
+            message_thread_id=message.message_thread_id,
+            reply_markup=keyboards.back_to_menu_group_markup
+        )
+
+        return
+
+    function_name: str = DBWorker.RegexpWaitManager.get_by_telegram_id(message.from_user.id).function_name
+
+
+
 """
     _____________________________________CALLBACK ZONE_____________________________________
 """
+
+
+# при нажатии на "вернуться в меню групп"
+@bot.callback_query_handler(func=lambda call: call.data == 'back_to_group_menu')
+def back_to_group_menu(call: telebot.types.CallbackQuery):
+    if DBWorker.RegexpWaitManager.user_in_wait_list(call.from_user.id):
+        DBWorker.RegexpWaitManager.delete_by_telegram_id(call.from_user.id)
+
+    bot.edit_message_text(
+        text='Выберите группу',
+        chat_id=call.message.chat.id,
+        message_id=call.message.id,
+        reply_markup=keyboards.get_group_list_markup()
+    )
 
 
 # при выборе группы
@@ -115,7 +149,9 @@ def on_select_group_pressed(call: telebot.types.CallbackQuery) -> None:
 
 
 # при выборе пункта меню в треде
-@bot.callback_query_handler(func=lambda call: call.data)
+@bot.callback_query_handler(
+    func=lambda call: call.data.startswith('thread_menu') or call.data.startswith('back_to_function_list_for_')
+)
 def on_menu_thread_pressed(call: telebot.types.CallbackQuery) -> None:
     thread_id: int = int(call.data.split('_')[-1])
 
@@ -123,13 +159,40 @@ def on_menu_thread_pressed(call: telebot.types.CallbackQuery) -> None:
         pass
 
     elif 'new_rule' in call.data:
-        pass
+        bot.edit_message_text(
+            chat_id=call.message.chat.id,
+            message_id=call.message.id,
+            text='Выберите функцию для привязки',
+            reply_markup=keyboards.get_function_list(thread_id)
+        )
 
     elif 'clear_rules' in call.data:
         pass
 
 
-def start_poll():
+# при выборе функции привязки
+@bot.callback_query_handler(func=lambda call: call.data.startswith('answer'))
+def on_function_select(call: telebot.types.CallbackQuery) -> None:
+    call.data = call.data.split('_for_')
+
+    thread_id: int = int(call.data[1])
+    function_name: str = call.data[0]
+
+    DBWorker.RegexpWaitManager.create_new(
+        thread_id=thread_id,
+        telegram_id=call.from_user.id,
+        function_name=function_name
+    )
+
+    bot.edit_message_text(
+        chat_id=call.message.chat.id,
+        message_id=call.message.id,
+        text='Введите регулярное выражение',
+        reply_markup=keyboards.back_to_menu_group_markup
+    )
+
+
+def start_poll() -> None:
     bot.infinity_polling()
     global stop
     stop = True

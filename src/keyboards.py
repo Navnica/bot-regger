@@ -17,6 +17,17 @@ yes_no_markup: InlineKeyboardMarkup = InlineKeyboardMarkup(
     ]
 )
 
+back_to_menu_group_markup: InlineKeyboardMarkup = InlineKeyboardMarkup(
+    [
+        [
+            InlineKeyboardButton(
+                text='<',
+                callback_data='back_to_group_menu'
+            )
+        ]
+    ]
+)
+
 
 def get_group_list_markup() -> InlineKeyboardMarkup:
     kb: InlineKeyboardMarkup = InlineKeyboardMarkup()
@@ -55,12 +66,12 @@ def get_thread_menu(thread_id: int) -> InlineKeyboardMarkup:
             [
                 InlineKeyboardButton(
                     text='Все правила',
-                    callback_data=f'thread_menu_all_rules_for_thread_{thread_id}'
+                    callback_data=f'thread_menu_all_rules_for_{thread_id}'
                 ),
 
                 InlineKeyboardButton(
                     text='Новое правило',
-                    callback_data=f'thread_menu_new_rule_for_thread_{thread_id}'
+                    callback_data=f'thread_menu_new_rule_for_{thread_id}'
                 ),
 
             ]
@@ -70,7 +81,47 @@ def get_thread_menu(thread_id: int) -> InlineKeyboardMarkup:
     kb.row(
         InlineKeyboardButton(
             text='Сбросить правила',
-            callback_data=f'thread_menu_clear_rules_for_thread_{thread_id}'
+            callback_data=f'thread_menu_clear_rules_for_{thread_id}'
         ))
 
     return kb
+
+
+def get_function_list(thread_id: int) -> InlineKeyboardMarkup:
+    kb: InlineKeyboardMarkup = InlineKeyboardMarkup()
+
+    kb.add(
+        InlineKeyboardButton(
+            text='answer',
+            callback_data=f'answer_for_{thread_id}'
+        )
+    )
+
+    kb.add(
+        InlineKeyboardButton(
+            text='answer_delete_after',
+            callback_data=f'answer_delete_after_for_{thread_id}'
+        )
+    )
+
+    kb.add(
+        InlineKeyboardButton(
+            text='answer_yes_no',
+            callback_data=f'answer_yes_no_for_{thread_id}'
+        )
+    )
+
+    return kb
+
+
+def get_with_back_button(thread_id: int) -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton(
+                    text='<',
+                    callback_data=f'back_to_function_list_for_{thread_id}'
+                )
+            ]
+        ]
+    )
