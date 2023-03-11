@@ -52,7 +52,7 @@ def get_threads_linked_group_by_group_id(group_id: int) -> InlineKeyboardMarkup:
     for thread in linked_threads:
         kb.add(
             InlineKeyboardButton(
-                text='Main' if not str(thread.thread_id) is None else str(thread.thread_id),
+                text='Main' if thread.thread_id is None else str(thread.thread_id),
                 callback_data=f'thread_select_{thread.id}'
             )
         )

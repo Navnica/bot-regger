@@ -48,28 +48,43 @@ class DBWorker:
                 thread_id=thread_id
             )[0]
 
-    class RegexpWaitManager:
+    class RegexWaitManager:
         @staticmethod
-        def get_by_telegram_id(telegram_id: int) -> RegexpWait:
+        def get_by_telegram_id(telegram_id: int) -> RegexWait:
             user: User = DBWorker.UserManager.get_by_telegram_id(telegram_id)
 
-            return RegexpWait.get(RegexpWait.user == user)
+            return RegexWait.get(RegexWait.user == user)
 
         @staticmethod
         def user_in_wait_list(telegram_id: int) -> bool:
             user: User = DBWorker.UserManager.get_by_telegram_id(telegram_id)
 
-            return True if RegexpWait.get_or_none(RegexpWait.user == user) is not None else False
+            return True if RegexWait.get_or_none(RegexWait.user == user) is not None else False
 
         @staticmethod
-        def create_new(thread_id: int, telegram_id: int, function_name: str) -> RegexpWait:
+        def get_stage(telegram_id: int) -> str | None:
+            user: User = DBWorker.UserManager.get_by_telegram_id(telegram_id)
+            r = RegexWait.get_or_none(RegexWait.user == user)
+
+            return r.stage if r is not None else None
+
+        @staticmethod
+        def set_stage(telegram_id: int, new_stage: str) -> None:
+            user: User = DBWorker.UserManager.get_by_telegram_id(telegram_id)
+            r: RegexWait = RegexWait.get_or_none(RegexWait.user == user)
+            r.stage = new_stage
+            r.save()
+
+        @staticmethod
+        def create_new(thread_id: int, telegram_id: int, function_name: str, delay=None) -> RegexWait:
             thread = DBWorker.MessageThreadManager.get_thread_by_id(thread_id)
             user = DBWorker.UserManager.get_by_telegram_id(telegram_id)
 
-            new_regex: RegexpWait = RegexpWait.create(
+            new_regex: RegexWait = RegexWait.create(
                 thread=thread,
                 user=user,
-                function_name=function_name
+                function_name=function_name,
+                delay=delay
             )
 
             new_regex.save()
@@ -78,9 +93,29 @@ class DBWorker:
 
         @staticmethod
         def delete_by_telegram_id(telegram_id: int) -> None:
-            DBWorker.RegexpWaitManager.get_by_telegram_id(telegram_id).delete_instance()
+            DBWorker.RegexWaitManager.get_by_telegram_id(telegram_id).delete_instance()
 
     class ActionManager:
         @staticmethod
-        def create_new() -> Action:
-            pass
+        def get_by_id(action_id: int) -> Action:
+            return Action.get(Action.id == action_id)
+        @staticmethod
+        def create_new(thread_id: int, regular_expression: str, def_name: str, text: str) -> Action:
+            thread = DBWorker.MessageThreadManager.get_thread_by_id(thread_id)
+
+            new_action = Action.create(
+                thread=thread,
+                regular_expression=regular_expression,
+                def_name=def_name,
+                text=text
+            )
+
+            new_action.save()
+
+            return new_action
+
+        @staticmethod
+        def set_text(action_id: int, text: str):
+            action = DBWorker.ActionManager.get_by_id(action_id)
+            action.text = text
+            action.save()

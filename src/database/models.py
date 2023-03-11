@@ -28,12 +28,19 @@ class MessageThread(BaseModel):
 
 
 class Action(BaseModel):
-    chat_id = ForeignKeyField(Group, related_name='group_action', null=False)
-    message_thread_id = ForeignKeyField(MessageThread, null=False)
+    thread = ForeignKeyField(MessageThread, related_name='action_thread', null=False)
     regular_expression = CharField(null=False)
     def_name = CharField(null=False)
     text = CharField(null=False)
     time_out_value = IntegerField(null=True, default=0)
+
+    def set_text(self, text: str) -> None:
+        self.text = text
+        self.save()
+
+    def set_delay(self, time_delay: int):
+        self.time_out_value = time_delay
+        self.save()
 
 
 class TMessage(BaseModel):
@@ -49,10 +56,21 @@ class DeleteList(BaseModel):
     time_delete = DateTimeField(null=True)
 
 
-class RegexpWait(BaseModel):
+class RegexWait(BaseModel):
     thread = ForeignKeyField(MessageThread, related_name='thread_regex', null=False)
     user = ForeignKeyField(User, related_name='user_regex', null=False)
     function_name = CharField(null=False)
+    delay = IntegerField(null=True)
+    stage = CharField(default='regex_wait')
+    action = ForeignKeyField(Action, null=True, related_name='action_regex_wait')
+
+    def set_stage(self, new_stage: str) -> None:
+        self.stage = new_stage
+        self.save()
+
+    def set_action(self, new_action: Action) -> None:
+        self.action = new_action
+        self.save()
 
 
 Action.create_table()
@@ -61,4 +79,4 @@ User.create_table()
 TMessage.create_table()
 DeleteList.create_table()
 MessageThread.create_table()
-RegexpWait.create_table()
+RegexWait.create_table()
