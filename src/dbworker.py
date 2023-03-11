@@ -3,7 +3,7 @@
 """
 
 from src.database.models import *
-
+from datetime import datetime
 
 class DBWorker:
     class UserManager:
@@ -133,3 +133,29 @@ class DBWorker:
 
             for action in actions:
                 action.delete_instance()
+
+    class DeleteListManager:
+        @staticmethod
+        def create_new(thread_id: int, message_id: int, time_delete: datetime) -> DeleteList:
+            thread: MessageThread = DBWorker.MessageThreadManager.get_thread_by_id(thread_id)
+            new_delete_list: DeleteList = DeleteList.create(
+                thread=thread,
+                message_id=message_id,
+                time_delete=time_delete
+            )
+
+            new_delete_list.save()
+
+            return new_delete_list
+
+        @staticmethod
+        def get_all_delete_list() -> tuple[DeleteList]:
+            return DeleteList.select()
+
+        @staticmethod
+        def get(thread_id: int, message_id: int) -> DeleteList:
+            thread: MessageThread = DBWorker.MessageThreadManager.get_thread_by_id(thread_id)
+            return DeleteList.get(
+                DeleteList.thread == thread,
+                DeleteList.message_id == message_id
+            )

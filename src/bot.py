@@ -1,4 +1,3 @@
-import datetime
 import peewee
 import telebot
 import json
@@ -8,7 +7,7 @@ import sys
 from src import keyboards
 from src.dbworker import DBWorker
 from src.regexpworker import RegexWorker
-from src.database import models
+import datetime
 
 logging.basicConfig(
     level=logging.INFO,
@@ -21,7 +20,6 @@ logging.basicConfig(
 )
 
 bot = telebot.TeleBot(json.load(open('config.json', encoding='utf-8'))['token'])
-# bot_instance = models.User.get_or_create(telegram_id=bot.get_me().id, power_level=2)
 stop = False
 
 
@@ -29,18 +27,10 @@ def message_cleaner() -> None:
     global stop
     while True:
         if stop: return
-        for msg in models.DeleteList.select():
+        for msg in DBWorker.DeleteListManager.get_all_delete_list():
             if datetime.datetime.now() > msg.time_delete:
-                try:
-                    bot.delete_message(chat_id=msg.t_message.chat_id,
-                                       message_id=msg.t_message.message_id)
-
-                    print(f'{msg.t_message.message_id} was deleted at {datetime.datetime.now().time()}')
-
-                    msg.t_message.delete_instance()
-
-                except peewee.DoesNotExist:
-                    print('TMessage does not exist, a pass')
+                bot.delete_message(chat_id=msg.thread.group.chat_id,
+                                   message_id=msg.message_id)
 
                 msg.delete_instance()
 
@@ -66,6 +56,32 @@ def on_group_message(message: telebot.types.Message):
         group=group,
         thread_id=message.message_thread_id
     )
+
+    action = RegexWorker.message_match(message_thread.id, message.text)
+
+    if action:
+        match action.def_name:
+            case 'answer':
+                bot.reply_to(message, action.text)
+
+            case 'answer_delete_after' | 'answer_yes_no':
+                new_message = bot.reply_to(
+                    message=message,
+                    text=action.text,
+                    reply_markup=keyboards.yes_no_markup if action.def_name == 'answer_yes_no' else None
+                )
+
+                DBWorker.DeleteListManager.create_new(
+                    thread_id=message_thread.id,
+                    message_id=message.message_id,
+                    time_delete=datetime.datetime.now() + datetime.timedelta(seconds=action.time_out_value)
+                )
+
+                DBWorker.DeleteListManager.create_new(
+                    thread_id=message_thread.id,
+                    message_id=new_message.message_id,
+                    time_delete=datetime.datetime.now() + datetime.timedelta(seconds=action.time_out_value)
+                )
 
 
 # при сообщении админа в личку
@@ -182,6 +198,47 @@ def on_regex_stage_is_answer_text(message: telebot.types.Message) -> None:
 """
 
 
+# при нажатии на "да"
+@bot.callback_query_handler(
+    func=lambda call: call.data == 'markup_yes' and
+                      call.from_user.id == call.message.reply_to_message.from_user.id
+)
+def on_press_yes(call: telebot.types.CallbackQuery) -> None:
+    group = DBWorker.GroupManager.get_or_create(
+        chat_id=call.message.chat.id,
+        title=call.message.chat.title,
+        group_type=call.message.chat.type
+    )
+
+    message_thread = DBWorker.MessageThreadManager.get_or_create(
+        group=group,
+        thread_id=call.message.reply_to_message.message_thread_id
+    )
+
+    DBWorker.DeleteListManager.get(message_thread.id, call.message.message_id).delete_now()
+
+
+# при нажатии на "нет"
+@bot.callback_query_handler(
+    func=lambda call: call.data == 'markup_no' and
+                      call.from_user.id == call.message.reply_to_message.from_user.id
+)
+def on_press_yes(call: telebot.types.CallbackQuery) -> None:
+    group = DBWorker.GroupManager.get_or_create(
+        chat_id=call.message.chat.id,
+        title=call.message.chat.title,
+        group_type=call.message.chat.type
+    )
+
+    message_thread = DBWorker.MessageThreadManager.get_or_create(
+        group=group,
+        thread_id=call.message.reply_to_message.message_thread_id
+    )
+
+    DBWorker.DeleteListManager.get(message_thread.id, call.message.reply_to_message.message_id).delete_now()
+    DBWorker.DeleteListManager.get(message_thread.id, call.message.message_id).delete_now()
+
+
 # при нажатии на "вернуться в меню групп"
 @bot.callback_query_handler(func=lambda call: call.data == 'back_to_group_menu')
 def back_to_group_menu(call: telebot.types.CallbackQuery):
@@ -241,7 +298,7 @@ def on_menu_thread_pressed(call: telebot.types.CallbackQuery) -> None:
             answer = 'Для данного треда правил пока нет'
 
         for rule in rules:
-            answer += f'{rule.id} <b>{rule.regular_expression}</b> <i>{rule.text}</i> {rule.time_out_value}'
+            answer += f'{rule.id} <b>{rule.regular_expression}</b> <i>{rule.text}</i> <code>{rule.def_name}</code> {rule.time_out_value}'
 
         bot.edit_message_text(
             chat_id=call.message.chat.id,

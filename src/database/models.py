@@ -1,3 +1,4 @@
+import datetime
 from peewee import *
 
 db = SqliteDatabase('src/database/database.db')
@@ -52,8 +53,13 @@ class TMessage(BaseModel):
 
 
 class DeleteList(BaseModel):
-    t_message = ForeignKeyField(TMessage, related_name='t_message')
+    thread = ForeignKeyField(MessageThread, related_name='delete_thread', null=False)
+    message_id = IntegerField(null=False)
     time_delete = DateTimeField(null=True)
+
+    def delete_now(self):
+        self.time_delete = datetime.datetime.now()
+        self.save()
 
 
 class RegexWait(BaseModel):
