@@ -234,7 +234,22 @@ def on_menu_thread_pressed(call: telebot.types.CallbackQuery) -> None:
     thread_id: int = int(call.data.split('_')[-1])
 
     if 'all_rules' in call.data:
-        pass
+        rules = DBWorker.ActionManager.get_rules_for_thread(thread_id)
+        answer: str = 'Правила для треда ' + str(thread_id) + '\n\n'
+
+        if not rules:
+            answer = 'Для данного треда правил пока нет'
+
+        for rule in rules:
+            answer += f'{rule.id} <b>{rule.regular_expression}</b> <i>{rule.text}</i> {rule.time_out_value}'
+
+        bot.edit_message_text(
+            chat_id=call.message.chat.id,
+            message_id=call.message.id,
+            text=answer,
+            reply_markup=keyboards.back_to_menu_group_markup,
+            parse_mode='HTML'
+        )
 
     elif 'new_rule' in call.data:
         bot.edit_message_text(
@@ -245,7 +260,14 @@ def on_menu_thread_pressed(call: telebot.types.CallbackQuery) -> None:
         )
 
     elif 'clear_rules' in call.data:
-        pass
+        DBWorker.ActionManager.clear_rules_for_thread(thread_id)
+
+        bot.edit_message_text(
+            chat_id=call.message.chat.id,
+            message_id=call.message.id,
+            text='Правила были удалены',
+            reply_markup=keyboards.back_to_menu_group_markup
+        )
 
 
 # при выборе функции привязки

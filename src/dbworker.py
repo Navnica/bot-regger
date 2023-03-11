@@ -99,6 +99,7 @@ class DBWorker:
         @staticmethod
         def get_by_id(action_id: int) -> Action:
             return Action.get(Action.id == action_id)
+
         @staticmethod
         def create_new(thread_id: int, regular_expression: str, def_name: str, text: str) -> Action:
             thread = DBWorker.MessageThreadManager.get_thread_by_id(thread_id)
@@ -119,3 +120,16 @@ class DBWorker:
             action = DBWorker.ActionManager.get_by_id(action_id)
             action.text = text
             action.save()
+
+        @staticmethod
+        def get_rules_for_thread(thread_id: int) -> tuple[Action] | None:
+            thread: MessageThread = DBWorker.MessageThreadManager.get_thread_by_id(thread_id)
+            return Action.select().where(Action.thread == thread)
+
+        @staticmethod
+        def clear_rules_for_thread(thread_id: int) -> None:
+            thread: MessageThread = DBWorker.MessageThreadManager.get_thread_by_id(thread_id)
+            actions: tuple[Action] = Action.select().where(Action.thread == thread)
+
+            for action in actions:
+                action.delete_instance()
