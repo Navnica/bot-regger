@@ -5,6 +5,7 @@
 from src.database.models import *
 from datetime import datetime
 
+
 class DBWorker:
     class UserManager:
         @staticmethod

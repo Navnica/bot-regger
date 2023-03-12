@@ -29,8 +29,11 @@ def message_cleaner() -> None:
         if stop: return
         for msg in DBWorker.DeleteListManager.get_all_delete_list():
             if datetime.datetime.now() > msg.time_delete:
-                bot.delete_message(chat_id=msg.thread.group.chat_id,
-                                   message_id=msg.message_id)
+                try:
+                    bot.delete_message(chat_id=msg.thread.group.chat_id,
+                                       message_id=msg.message_id)
+                except:
+                    pass
 
                 msg.delete_instance()
 
@@ -46,6 +49,8 @@ cleaner.start()
 # при любом сообщении в группу
 @bot.message_handler(chat_types=['group', 'supergroup'])
 def on_group_message(message: telebot.types.Message):
+    DBWorker.UserManager.user_is_admin(message.from_user.id)
+
     group = DBWorker.GroupManager.get_or_create(
         chat_id=message.chat.id,
         title=message.chat.title,
@@ -215,6 +220,7 @@ def on_press_yes(call: telebot.types.CallbackQuery) -> None:
         thread_id=call.message.reply_to_message.message_thread_id
     )
 
+    DBWorker.DeleteListManager.get(message_thread.id, call.message.reply_to_message.message_id).delete_instance()
     DBWorker.DeleteListManager.get(message_thread.id, call.message.message_id).delete_now()
 
 
@@ -298,7 +304,7 @@ def on_menu_thread_pressed(call: telebot.types.CallbackQuery) -> None:
             answer = 'Для данного треда правил пока нет'
 
         for rule in rules:
-            answer += f'{rule.id} <b>{rule.regular_expression}</b> <i>{rule.text}</i> <code>{rule.def_name}</code> {rule.time_out_value}'
+            answer += f'{rule.id} <b>{rule.regular_expression}</b> <i>{rule.text}</i> <code>{rule.def_name}</code> {rule.time_out_value}\n'
 
         bot.edit_message_text(
             chat_id=call.message.chat.id,

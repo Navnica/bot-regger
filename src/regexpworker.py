@@ -16,7 +16,7 @@ class RegexWorker:
         actions_for_thread = DBWorker.ActionManager.get_rules_for_thread(thread_id)
 
         for rule in actions_for_thread:
-            if re.match(rule.regular_expression, message_text) is not None:
+            if re.search(rule.regular_expression, message_text) is not None:
                 return rule
 
         return None
