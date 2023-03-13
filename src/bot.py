@@ -24,6 +24,20 @@ bot = telebot.TeleBot(json.load(open('config.json', encoding='utf-8'))['token'])
 stop = False
 
 
+def delete_none(_dict):
+    new_dict = {}
+
+    for key, value in _dict.items():
+        try:
+            new_dict.update(delete_none(value.__dict__))
+
+        except AttributeError:
+            if value is not None:
+                new_dict.update({key: value})
+
+    return new_dict
+
+
 def log(message: telebot.types.Message | telebot.types.CallbackQuery | str, log_level: int) -> None:
     for log_thread in DBWorker.MessageThreadManager.get_log_threads():
         match str(type(message)):
@@ -85,6 +99,7 @@ cleaner.start()
     _____________________________________MESSAGE ZONE_____________________________________
 """
 
+
 # при любом сообщении в группу
 @bot.message_handler(chat_types=['group', 'supergroup'])
 def on_group_message(message: telebot.types.Message):
@@ -135,7 +150,6 @@ def on_group_message(message: telebot.types.Message):
     commands=['register']
 )
 def on_chat_register(message: telebot.types.Message):
-    log(message, logging.INFO)
     group = DBWorker.GroupManager.get_or_create(
         chat_id=message.chat.id,
         title=str(message.from_user.id) if not message.from_user.username else message.from_user.username,
@@ -176,7 +190,6 @@ def on_private_admin_message(message: telebot.types.Message) -> None:
     func=lambda message: DBWorker.RegexWaitManager.get_stage(message.from_user.id) == 'regex_wait'
 )
 def on_regex_stage_is_regex_wait(message: telebot.types.Message) -> None:
-    log(message, logging.INFO)
     if not RegexWorker.regex_is_correct(message.text):
         bot.send_message(
             text='Заданное выражение неверно',
@@ -223,7 +236,6 @@ def on_regex_stage_is_regex_wait(message: telebot.types.Message) -> None:
     func=lambda message: DBWorker.RegexWaitManager.get_stage(message.from_user.id) == 'time_delay'
 )
 def on_regex_stage_is_time_delay(message: telebot.types.Message) -> None:
-    log(message, logging.INFO)
     regex_wait = DBWorker.RegexWaitManager.get_by_telegram_id(message.from_user.id)
 
     if not message.text.isdigit():
@@ -253,7 +265,6 @@ def on_regex_stage_is_time_delay(message: telebot.types.Message) -> None:
     func=lambda message: DBWorker.RegexWaitManager.get_stage(message.from_user.id) == 'answer_text'
 )
 def on_regex_stage_is_answer_text(message: telebot.types.Message) -> None:
-    log(message, logging.INFO)
     regex_wait = DBWorker.RegexWaitManager.get_by_telegram_id(message.from_user.id)
     regex_wait.action.set_text(message.text)
 
@@ -273,7 +284,6 @@ def on_regex_stage_is_answer_text(message: telebot.types.Message) -> None:
     func=lambda message: DBWorker.RegexWaitManager.get_stage(message.from_user.id) == 'name_wait'
 )
 def on_regex_stage_is_answer_text(message: telebot.types.Message) -> None:
-    log(message, logging.INFO)
     regex_wait = DBWorker.RegexWaitManager.get_by_telegram_id(message.from_user.id)
     regex_wait.action.set_name(message.text)
 
@@ -298,7 +308,6 @@ def on_regex_stage_is_answer_text(message: telebot.types.Message) -> None:
                       call.from_user.id == call.message.reply_to_message.from_user.id
 )
 def on_press_yes(call: telebot.types.CallbackQuery) -> None:
-    log(call, logging.INFO)
     group = DBWorker.GroupManager.get_or_create(
         chat_id=call.message.chat.id,
         title=call.message.chat.title,
@@ -320,7 +329,6 @@ def on_press_yes(call: telebot.types.CallbackQuery) -> None:
                       call.from_user.id == call.message.reply_to_message.from_user.id
 )
 def on_press_yes(call: telebot.types.CallbackQuery) -> None:
-    log(call, logging.INFO)
     group = DBWorker.GroupManager.get_or_create(
         chat_id=call.message.chat.id,
         title=call.message.chat.title,
@@ -339,7 +347,6 @@ def on_press_yes(call: telebot.types.CallbackQuery) -> None:
 # при нажатии на "вернуться в меню групп"
 @bot.callback_query_handler(func=lambda call: call.data == 'back_to_group_menu')
 def back_to_group_menu(call: telebot.types.CallbackQuery):
-    log(call, logging.INFO)
     if DBWorker.RegexWaitManager.user_in_wait_list(call.from_user.id):
         regex_wait = DBWorker.RegexWaitManager.get_by_telegram_id(call.from_user.id)
         if regex_wait.action is not None:
@@ -358,7 +365,6 @@ def back_to_group_menu(call: telebot.types.CallbackQuery):
 # при выборе группы
 @bot.callback_query_handler(func=lambda call: call.data.startswith('group_select_'))
 def on_select_group_pressed(call: telebot.types.CallbackQuery) -> None:
-    log(call, logging.INFO)
     group: int = int(call.data.split('_')[2])
 
     bot.edit_message_text(
@@ -372,7 +378,6 @@ def on_select_group_pressed(call: telebot.types.CallbackQuery) -> None:
 # при выборе топика
 @bot.callback_query_handler(func=lambda call: call.data.startswith('thread_select_'))
 def on_select_group_pressed(call: telebot.types.CallbackQuery) -> None:
-    log(call, logging.INFO)
     thread: int = int(call.data.split('_')[2])
 
     bot.edit_message_text(
@@ -388,7 +393,6 @@ def on_select_group_pressed(call: telebot.types.CallbackQuery) -> None:
     func=lambda call: call.data.startswith('thread_menu') or call.data.startswith('back_to_function_list_for_')
 )
 def on_menu_thread_pressed(call: telebot.types.CallbackQuery) -> None:
-    log(call, logging.INFO)
     thread_id: int = int(call.data.split('_')[-1])
 
     if 'all_rules' in call.data:
@@ -431,7 +435,6 @@ def on_menu_thread_pressed(call: telebot.types.CallbackQuery) -> None:
 # при выборе функции привязки
 @bot.callback_query_handler(func=lambda call: call.data.startswith('answer'))
 def on_function_select(call: telebot.types.CallbackQuery) -> None:
-    log(call, logging.INFO)
     call.data = call.data.split('_for_')
 
     thread_id: int = int(call.data[1])
@@ -454,8 +457,6 @@ def on_function_select(call: telebot.types.CallbackQuery) -> None:
 # при нажатии на сделать лог-чатом\ сделать обычным
 @bot.callback_query_handler(func=lambda call: call.data.startswith('log_'))
 def on_log_switch(call: telebot.types.CallbackQuery) -> None:
-    log(call, logging.INFO)
-
     thread_id: int = int(call.data.split('_')[-1])
 
     DBWorker.MessageThreadManager.set_log_status(thread_id, False if 'off' in call.data else True)
@@ -478,8 +479,8 @@ def on_log_switch(call: telebot.types.CallbackQuery) -> None:
                   'contact', 'new_chat_members', 'left_chat_member', 'new_chat_title', 'new_chat_photo',
                   'delete_chat_photo', 'group_chat_created', 'supergroup_chat_created', 'channel_chat_created',
                   'migrate_to_chat_id', 'migrate_from_chat_id', 'pinned_message', "web_app_data"])
-def on_any_action(bot_instance, call):
-    log(str(call), logging.INFO)
+def on_any_action(bot_instance: telebot.TeleBot, call: telebot.types.Update):
+    log(str(delete_none(call.__dict__)), logging.INFO)
 
 
 def start_poll() -> None:

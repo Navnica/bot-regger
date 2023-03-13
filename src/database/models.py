@@ -77,7 +77,6 @@ class RegexWait(BaseModel):
         self.save()
 
 
-
 class Filtered(BaseModel):
     user = ForeignKeyField(User, related_name='filtred_user', null=False)
     action = ForeignKeyField(Action, related_name='action_filtred', null=False)
