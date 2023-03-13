@@ -19,8 +19,44 @@ logging.basicConfig(
     ]
 )
 
+telebot.apihelper.ENABLE_MIDDLEWARE = True
 bot = telebot.TeleBot(json.load(open('config.json', encoding='utf-8'))['token'])
 stop = False
+
+
+def log(message: telebot.types.Message | telebot.types.CallbackQuery | str, log_level: int) -> None:
+    for log_thread in DBWorker.MessageThreadManager.get_log_threads():
+        match str(type(message)):
+            case "<class 'str'>":
+                bot.send_message(
+                    chat_id=log_thread.group.chat_id,
+                    message_thread_id=log_thread.thread_id,
+                    text=message
+                )
+
+                logging.log(log_level, message)
+
+            case "<class 'telebot.types.CallbackQuery'>":
+                text = f'{message.from_user.username} pressed on {message.data} at {datetime.datetime.now()}'
+                bot.send_message(
+                    chat_id=log_thread.group.chat_id,
+                    message_thread_id=log_thread.thread_id,
+                    text=text
+                )
+
+                logging.log(log_level, text)
+
+            case "<class 'telebot.types.Message'>":
+                text = f'{message.from_user} send {message.text} to {message.chat.id}::{message.message_thread_id}'
+
+                bot.forward_message(
+                    chat_id=log_thread.group.chat_id,
+                    message_thread_id=log_thread.thread_id,
+                    from_chat_id=message.chat.id,
+                    message_id=message.message_id
+                )
+
+                logging.log(log_level, text)
 
 
 def message_cleaner() -> None:
@@ -32,8 +68,12 @@ def message_cleaner() -> None:
                 try:
                     bot.delete_message(chat_id=msg.thread.group.chat_id,
                                        message_id=msg.message_id)
-                except:
-                    pass
+
+                    log(f'Message {msg.message_id} for {msg.thread.group.title}::{msg.thread.thread_id} was deleted',
+                        logging.INFO)
+
+                except peewee.OperationalError:
+                    log('Message ' + msg.message_id + 'does not exists. Skip', logging.WARNING)
 
                 msg.delete_instance()
 
@@ -44,7 +84,6 @@ cleaner.start()
 """
     _____________________________________MESSAGE ZONE_____________________________________
 """
-
 
 # при любом сообщении в группу
 @bot.message_handler(chat_types=['group', 'supergroup'])
@@ -89,6 +128,32 @@ def on_group_message(message: telebot.types.Message):
                 )
 
 
+# для регистрации приватного чата в список
+@bot.message_handler(
+    chat_types=['private'],
+    func=lambda message: DBWorker.UserManager.user_is_admin(message.from_user.id),
+    commands=['register']
+)
+def on_chat_register(message: telebot.types.Message):
+    log(message, logging.INFO)
+    group = DBWorker.GroupManager.get_or_create(
+        chat_id=message.chat.id,
+        title=str(message.from_user.id) if not message.from_user.username else message.from_user.username,
+        group_type=message.chat.type
+    )
+
+    message_thread = DBWorker.MessageThreadManager.get_or_create(
+        group=group,
+        thread_id=message.message_thread_id
+    )
+
+    bot.send_message(
+        text='Чат был добавлен в список',
+        chat_id=message.chat.id,
+        message_thread_id=message.message_thread_id,
+    )
+
+
 # при сообщении админа в личку
 @bot.message_handler(
     chat_types=['private'],
@@ -96,6 +161,7 @@ def on_group_message(message: telebot.types.Message):
     commands=['groups']
 )
 def on_private_admin_message(message: telebot.types.Message) -> None:
+    log(message, logging.INFO)
     bot.send_message(
         text='Выберите группу',
         chat_id=message.chat.id,
@@ -110,6 +176,7 @@ def on_private_admin_message(message: telebot.types.Message) -> None:
     func=lambda message: DBWorker.RegexWaitManager.get_stage(message.from_user.id) == 'regex_wait'
 )
 def on_regex_stage_is_regex_wait(message: telebot.types.Message) -> None:
+    log(message, logging.INFO)
     if not RegexWorker.regex_is_correct(message.text):
         bot.send_message(
             text='Заданное выражение неверно',
@@ -156,6 +223,7 @@ def on_regex_stage_is_regex_wait(message: telebot.types.Message) -> None:
     func=lambda message: DBWorker.RegexWaitManager.get_stage(message.from_user.id) == 'time_delay'
 )
 def on_regex_stage_is_time_delay(message: telebot.types.Message) -> None:
+    log(message, logging.INFO)
     regex_wait = DBWorker.RegexWaitManager.get_by_telegram_id(message.from_user.id)
 
     if not message.text.isdigit():
@@ -185,8 +253,29 @@ def on_regex_stage_is_time_delay(message: telebot.types.Message) -> None:
     func=lambda message: DBWorker.RegexWaitManager.get_stage(message.from_user.id) == 'answer_text'
 )
 def on_regex_stage_is_answer_text(message: telebot.types.Message) -> None:
+    log(message, logging.INFO)
     regex_wait = DBWorker.RegexWaitManager.get_by_telegram_id(message.from_user.id)
     regex_wait.action.set_text(message.text)
+
+    regex_wait.set_stage('name_wait')
+
+    bot.send_message(
+        chat_id=message.chat.id,
+        message_thread_id=message.message_thread_id,
+        text='Введите имя для правила',
+        reply_markup=keyboards.back_to_menu_group_markup
+    )
+
+
+# при сообщении от пользователя, от которого ождиается ввод имени для правила
+@bot.message_handler(
+    chat_types=['private'],
+    func=lambda message: DBWorker.RegexWaitManager.get_stage(message.from_user.id) == 'name_wait'
+)
+def on_regex_stage_is_answer_text(message: telebot.types.Message) -> None:
+    log(message, logging.INFO)
+    regex_wait = DBWorker.RegexWaitManager.get_by_telegram_id(message.from_user.id)
+    regex_wait.action.set_name(message.text)
 
     regex_wait.delete_instance()
 
@@ -209,6 +298,7 @@ def on_regex_stage_is_answer_text(message: telebot.types.Message) -> None:
                       call.from_user.id == call.message.reply_to_message.from_user.id
 )
 def on_press_yes(call: telebot.types.CallbackQuery) -> None:
+    log(call, logging.INFO)
     group = DBWorker.GroupManager.get_or_create(
         chat_id=call.message.chat.id,
         title=call.message.chat.title,
@@ -230,6 +320,7 @@ def on_press_yes(call: telebot.types.CallbackQuery) -> None:
                       call.from_user.id == call.message.reply_to_message.from_user.id
 )
 def on_press_yes(call: telebot.types.CallbackQuery) -> None:
+    log(call, logging.INFO)
     group = DBWorker.GroupManager.get_or_create(
         chat_id=call.message.chat.id,
         title=call.message.chat.title,
@@ -248,6 +339,7 @@ def on_press_yes(call: telebot.types.CallbackQuery) -> None:
 # при нажатии на "вернуться в меню групп"
 @bot.callback_query_handler(func=lambda call: call.data == 'back_to_group_menu')
 def back_to_group_menu(call: telebot.types.CallbackQuery):
+    log(call, logging.INFO)
     if DBWorker.RegexWaitManager.user_in_wait_list(call.from_user.id):
         regex_wait = DBWorker.RegexWaitManager.get_by_telegram_id(call.from_user.id)
         if regex_wait.action is not None:
@@ -266,6 +358,7 @@ def back_to_group_menu(call: telebot.types.CallbackQuery):
 # при выборе группы
 @bot.callback_query_handler(func=lambda call: call.data.startswith('group_select_'))
 def on_select_group_pressed(call: telebot.types.CallbackQuery) -> None:
+    log(call, logging.INFO)
     group: int = int(call.data.split('_')[2])
 
     bot.edit_message_text(
@@ -279,6 +372,7 @@ def on_select_group_pressed(call: telebot.types.CallbackQuery) -> None:
 # при выборе топика
 @bot.callback_query_handler(func=lambda call: call.data.startswith('thread_select_'))
 def on_select_group_pressed(call: telebot.types.CallbackQuery) -> None:
+    log(call, logging.INFO)
     thread: int = int(call.data.split('_')[2])
 
     bot.edit_message_text(
@@ -294,6 +388,7 @@ def on_select_group_pressed(call: telebot.types.CallbackQuery) -> None:
     func=lambda call: call.data.startswith('thread_menu') or call.data.startswith('back_to_function_list_for_')
 )
 def on_menu_thread_pressed(call: telebot.types.CallbackQuery) -> None:
+    log(call, logging.INFO)
     thread_id: int = int(call.data.split('_')[-1])
 
     if 'all_rules' in call.data:
@@ -304,7 +399,7 @@ def on_menu_thread_pressed(call: telebot.types.CallbackQuery) -> None:
             answer = 'Для данного треда правил пока нет'
 
         for rule in rules:
-            answer += f'{rule.id} <b>{rule.regular_expression}</b> <i>{rule.text}</i> <code>{rule.def_name}</code> {rule.time_out_value}\n'
+            answer += f'{rule.name} <b>{rule.regular_expression}</b> <i>{rule.text}</i> <code>{rule.def_name}</code> {rule.time_out_value}\n'
 
         bot.edit_message_text(
             chat_id=call.message.chat.id,
@@ -336,6 +431,7 @@ def on_menu_thread_pressed(call: telebot.types.CallbackQuery) -> None:
 # при выборе функции привязки
 @bot.callback_query_handler(func=lambda call: call.data.startswith('answer'))
 def on_function_select(call: telebot.types.CallbackQuery) -> None:
+    log(call, logging.INFO)
     call.data = call.data.split('_for_')
 
     thread_id: int = int(call.data[1])
@@ -353,6 +449,37 @@ def on_function_select(call: telebot.types.CallbackQuery) -> None:
         text='Введите регулярное выражение',
         reply_markup=keyboards.back_to_menu_group_markup
     )
+
+
+# при нажатии на сделать лог-чатом\ сделать обычным
+@bot.callback_query_handler(func=lambda call: call.data.startswith('log_'))
+def on_log_switch(call: telebot.types.CallbackQuery) -> None:
+    log(call, logging.INFO)
+
+    thread_id: int = int(call.data.split('_')[-1])
+
+    DBWorker.MessageThreadManager.set_log_status(thread_id, False if 'off' in call.data else True)
+
+    bot.edit_message_text(
+        chat_id=call.message.chat.id,
+        message_id=call.message.id,
+        text='Выберите пункт меню',
+        reply_markup=keyboards.get_thread_menu(thread_id)
+    )
+
+
+"""
+    _____________________________________UNNAMED ZONE_____________________________________
+"""
+
+
+@bot.middleware_handler(
+    update_types=['text', 'audio', 'document', 'photo', 'sticker', 'video', 'video_note', 'voice', 'location',
+                  'contact', 'new_chat_members', 'left_chat_member', 'new_chat_title', 'new_chat_photo',
+                  'delete_chat_photo', 'group_chat_created', 'supergroup_chat_created', 'channel_chat_created',
+                  'migrate_to_chat_id', 'migrate_from_chat_id', 'pinned_message', "web_app_data"])
+def on_any_action(bot_instance, call):
+    log(str(call), logging.INFO)
 
 
 def start_poll() -> None:

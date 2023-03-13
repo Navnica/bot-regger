@@ -84,6 +84,20 @@ def get_thread_menu(thread_id: int) -> InlineKeyboardMarkup:
             callback_data=f'thread_menu_clear_rules_for_{thread_id}'
         ))
 
+    if DBWorker.MessageThreadManager.thread_is_log(thread_id):
+        kb.row(
+            InlineKeyboardButton(
+                text='Сделать обычным',
+                callback_data=f'log_off_for_{thread_id}'
+            ))
+
+    else:
+        kb.row(
+            InlineKeyboardButton(
+                text='Сделать лог-чатом',
+                callback_data=f'log_on_for_{thread_id}'
+            ))
+
     return kb
 
 

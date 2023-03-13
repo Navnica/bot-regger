@@ -49,6 +49,20 @@ class DBWorker:
                 thread_id=thread_id
             )[0]
 
+        @staticmethod
+        def get_log_threads() -> tuple[MessageThread] | None:
+            return MessageThread.select().where(MessageThread.is_log_chat == True)
+
+        @staticmethod
+        def thread_is_log(thread_id: int) -> bool:
+            return DBWorker.MessageThreadManager.get_thread_by_id(thread_id).is_log_chat
+
+        @staticmethod
+        def set_log_status(thread_id: int, is_log: bool):
+            thread = DBWorker.MessageThreadManager.get_thread_by_id(thread_id)
+            thread.is_log_chat = is_log
+            thread.save()
+
     class RegexWaitManager:
         @staticmethod
         def get_by_telegram_id(telegram_id: int) -> RegexWait:

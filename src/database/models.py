@@ -16,7 +16,7 @@ class User(BaseModel):
 
 class Group(BaseModel):
     chat_id = IntegerField(null=False)
-    title = CharField(null=False)
+    title = CharField(null=True)
     type = CharField(null=False)
 
     def get_linked_actions(self) -> list:
@@ -26,10 +26,11 @@ class Group(BaseModel):
 class MessageThread(BaseModel):
     group = ForeignKeyField(Group, related_name='group_thread')
     thread_id = IntegerField(null=True)
+    is_log_chat = BooleanField(default=False)
 
 
 class Action(BaseModel):
-  #  name = C
+    name = CharField(null=True)
     thread = ForeignKeyField(MessageThread, related_name='action_thread', null=False)
     regular_expression = CharField(null=False)
     def_name = CharField(null=False)
@@ -42,6 +43,10 @@ class Action(BaseModel):
 
     def set_delay(self, time_delay: int):
         self.time_out_value = time_delay
+        self.save()
+
+    def set_name(self, name: str):
+        self.name = name
         self.save()
 
 
@@ -70,6 +75,7 @@ class RegexWait(BaseModel):
     def set_action(self, new_action: Action) -> None:
         self.action = new_action
         self.save()
+
 
 
 class Filtered(BaseModel):
