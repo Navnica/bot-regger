@@ -22,8 +22,12 @@ class DBWorker:
             return Group.select()
 
         @staticmethod
-        def get_group_by_id(id_group: int) -> Group | None:
+        def get_group_by_id(id_group: int) -> Group:
             return Group.get_or_none(Group.id == id_group)
+
+        @staticmethod
+        def get_group_by_chat_id(chat_id: int) -> Group | None:
+            return Group.get(Group.chat_id == chat_id)
 
         @staticmethod
         def get_or_create(chat_id: int, title: str, group_type: str) -> Group:

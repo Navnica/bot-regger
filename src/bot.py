@@ -8,6 +8,7 @@ from src import keyboards
 from src.dbworker import DBWorker
 from src.regexpworker import RegexWorker
 import datetime
+import pprint
 
 logging.basicConfig(
     level=logging.INFO,
@@ -22,6 +23,11 @@ logging.basicConfig(
 telebot.apihelper.ENABLE_MIDDLEWARE = True
 bot = telebot.TeleBot(json.load(open('config.json', encoding='utf-8'))['token'])
 stop = False
+
+FORWARDED_TYPES = [
+    'text', 'audio', 'document', 'photo', 'sticker', 'video', 'video_note', 'voice', 'location',
+    'contact'
+]
 
 
 def delete_none(_dict):
@@ -38,41 +44,6 @@ def delete_none(_dict):
     return new_dict
 
 
-def log(message: telebot.types.Message | telebot.types.CallbackQuery | str, log_level: int) -> None:
-    for log_thread in DBWorker.MessageThreadManager.get_log_threads():
-        match str(type(message)):
-            case "<class 'str'>":
-                bot.send_message(
-                    chat_id=log_thread.group.chat_id,
-                    message_thread_id=log_thread.thread_id,
-                    text=message
-                )
-
-                logging.log(log_level, message)
-
-            case "<class 'telebot.types.CallbackQuery'>":
-                text = f'{message.from_user.username} pressed on {message.data} at {datetime.datetime.now()}'
-                bot.send_message(
-                    chat_id=log_thread.group.chat_id,
-                    message_thread_id=log_thread.thread_id,
-                    text=text
-                )
-
-                logging.log(log_level, text)
-
-            case "<class 'telebot.types.Message'>":
-                text = f'{message.from_user} send {message.text} to {message.chat.id}::{message.message_thread_id}'
-
-                bot.forward_message(
-                    chat_id=log_thread.group.chat_id,
-                    message_thread_id=log_thread.thread_id,
-                    from_chat_id=message.chat.id,
-                    message_id=message.message_id
-                )
-
-                logging.log(log_level, text)
-
-
 def message_cleaner() -> None:
     global stop
     while True:
@@ -86,8 +57,8 @@ def message_cleaner() -> None:
                     log(f'Message {msg.message_id} for {msg.thread.group.title}::{msg.thread.thread_id} was deleted',
                         logging.INFO)
 
-                except peewee.OperationalError:
-                    log('Message ' + msg.message_id + 'does not exists. Skip', logging.WARNING)
+                except (peewee.OperationalError, telebot.apihelper.ApiTelegramException):
+                    log(update=f'Message {msg.message_id} does not exists. Skip', log_level=logging.WARNING)
 
                 msg.delete_instance()
 
@@ -175,7 +146,6 @@ def on_chat_register(message: telebot.types.Message):
     commands=['groups']
 )
 def on_private_admin_message(message: telebot.types.Message) -> None:
-    log(message, logging.INFO)
     bot.send_message(
         text='Выберите группу',
         chat_id=message.chat.id,
@@ -474,13 +444,78 @@ def on_log_switch(call: telebot.types.CallbackQuery) -> None:
 """
 
 
-@bot.middleware_handler(
-    update_types=['text', 'audio', 'document', 'photo', 'sticker', 'video', 'video_note', 'voice', 'location',
-                  'contact', 'new_chat_members', 'left_chat_member', 'new_chat_title', 'new_chat_photo',
-                  'delete_chat_photo', 'group_chat_created', 'supergroup_chat_created', 'channel_chat_created',
-                  'migrate_to_chat_id', 'migrate_from_chat_id', 'pinned_message', "web_app_data"])
-def on_any_action(bot_instance: telebot.TeleBot, call: telebot.types.Update):
-    log(str(delete_none(call.__dict__)), logging.INFO)
+def log(update: telebot.types.Update | str, log_level: int = logging.INFO):
+    logging.log(log_level, pprint.pformat(delete_none(update.__dict__)))
+    print('\n'*2)
+
+    for log_thread in DBWorker.MessageThreadManager.get_log_threads():
+        if type(update) is str:
+            bot.send_message(
+                chat_id=log_thread.group.chat_id,
+                message_thread_id=log_thread.thread_id,
+                text=update
+            )
+            return
+
+        update_dict: dict = delete_none(update.__dict__).copy()
+
+        if update.message is not None:
+            update_dict['content_type'] = update.message.content_type
+
+        elif update.edited_message is not None:
+            update_dict['content_type'] = update.edited_message.content_type
+
+        if update.message is not None:
+            if update.message.content_type in FORWARDED_TYPES:
+                forwarded_message: telebot.types.Message = bot.forward_message(
+                    chat_id=log_thread.group.chat_id,
+                    message_thread_id=log_thread.thread_id,
+                    message_id=update.message.message_id,
+                    from_chat_id=update.message.chat.id
+                )
+
+                for text in telebot.util.smart_split(pprint.pformat(update_dict), 5000):
+                    bot.reply_to(
+                        message=forwarded_message,
+                        text=text
+                    )
+
+            else:
+                for text in telebot.util.smart_split(pprint.pformat(update_dict), 5000):
+                    bot.send_message(
+                        chat_id=log_thread.group.chat_id,
+                        message_thread_id=log_thread.thread_id,
+                        text=text
+                    )
+
+        else:
+            for text in telebot.util.smart_split(pprint.pformat(update_dict), 5000):
+                bot.send_message(
+                    chat_id=log_thread.group.chat_id,
+                    message_thread_id=log_thread.thread_id,
+                    text=text
+                )
+
+
+@bot.middleware_handler()
+def on_any_action(bot_instance: telebot.TeleBot, update: telebot.types.Update):
+    if update.message is not None and update.message.content_type not in FORWARDED_TYPES:
+        group = DBWorker.GroupManager.get_group_by_chat_id(
+            chat_id=update.message.chat.id
+        )
+
+        message_thread = DBWorker.MessageThreadManager.get_or_create(
+            group=group,
+            thread_id=update.message.message_thread_id
+        )
+
+        DBWorker.DeleteListManager.create_new(
+            thread_id=message_thread,
+            message_id=update.message.message_id,
+            time_delete=datetime.datetime.now()
+        )
+
+    log(update, logging.INFO)
 
 
 def start_poll() -> None:

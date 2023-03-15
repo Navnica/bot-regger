@@ -15,7 +15,7 @@ class User(BaseModel):
 
 
 class Group(BaseModel):
-    chat_id = IntegerField(null=False)
+    chat_id = IntegerField(null=False, unique=True)
     title = CharField(null=True)
     type = CharField(null=False)
 
