@@ -1,3 +1,5 @@
+import time
+
 import peewee
 import telebot
 import json
@@ -474,11 +476,17 @@ def log(update: telebot.types.Update | str, log_level: int = logging.INFO):
                     from_chat_id=update.message.chat.id
                 )
 
+                i: int = 1
+
                 for text in telebot.util.smart_split(pprint.pformat(update_dict), 5000):
-                    bot.reply_to(
-                        message=forwarded_message,
-                        text=text
-                    )
+                    try:
+                        bot.reply_to(
+                            message=forwarded_message,
+                            text=text
+                        )
+                    except telebot.apihelper.ApiTelegramException:
+                        time.sleep(5)
+                        log('Отказ REST. Ожидание')
 
             else:
                 for text in telebot.util.smart_split(pprint.pformat(update_dict), 5000):
@@ -515,7 +523,10 @@ def on_any_action(bot_instance: telebot.TeleBot, update: telebot.types.Update):
             time_delete=datetime.datetime.now()
         )
 
-    log(update, logging.INFO)
+    try:
+        log(update, logging.INFO)
+    except:
+        pass
 
 
 def start_poll() -> None:
