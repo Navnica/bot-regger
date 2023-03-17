@@ -16,6 +16,11 @@ class DBWorker:
         def user_is_admin(telegram_id: int = 0) -> None:
             return User.get_or_create(telegram_id=telegram_id)[0].power_level >= 1  # не забыть изменить потом на 2
 
+
+        @staticmethod
+        def get_or_create(telegram_id: int, username: str) -> User:
+            return User.get_or_create(telegram_id=telegram_id, username=username)
+
     class GroupManager:
         @staticmethod
         def get_all_groups() -> tuple[Group]:
@@ -178,3 +183,25 @@ class DBWorker:
                 DeleteList.thread == thread,
                 DeleteList.message_id == message_id
             )
+
+    class ThreadHistory:
+        @staticmethod
+        def create_new(thread_id: int, from_user: int, message_id: int, text: str) -> ThreadHistory:
+            thread: MessageThread = DBWorker.MessageThreadManager.get_thread_by_id(thread_id)
+            user: User = DBWorker.UserManager.get_by_telegram_id(from_user)
+
+            new_history = ThreadHistory.create(
+                thread=thread,
+                from_user=user,
+                text=text,
+                message_id=message_id
+            )
+            new_history.save()
+
+            return new_history
+
+        @staticmethod
+        def get_history_for_thread(thread_id: int) -> tuple[ThreadHistory]:
+            thread: MessageThread = DBWorker.MessageThreadManager.get_thread_by_id(thread_id)
+
+            return ThreadHistory.select().where(ThreadHistory.thread == thread)

@@ -10,7 +10,8 @@ class BaseModel(Model):
 
 
 class User(BaseModel):
-    telegram_id = IntegerField(null=False)
+    telegram_id = IntegerField(null=False),
+    username = CharField(null=True)
     power_level = IntegerField(null=False, default=1)
 
 
@@ -77,11 +78,12 @@ class RegexWait(BaseModel):
         self.save()
 
 
-class Filtered(BaseModel):
-    user = ForeignKeyField(User, related_name='filtred_user', null=False)
-    action = ForeignKeyField(Action, related_name='action_filtred', null=False)
-    message_text = CharField(null=False)
-    time = DateTimeField()
+class ThreadHistory(BaseModel):
+    thread = ForeignKeyField(MessageThread, related_name='thread_history')
+    from_user = ForeignKeyField(User, related_name='user_history')
+    message_id = IntegerField(null=False)
+    message_datetime = DateTimeField(default=datetime.datetime.now())
+    text = CharField(null=False)
 
 
 Action.create_table()

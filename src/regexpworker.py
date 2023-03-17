@@ -20,3 +20,7 @@ class RegexWorker:
                 return rule
 
         return None
+
+    @staticmethod
+    def simple_match(regex: str, text: str) -> bool:
+        return re.search(regex, text) is not None

@@ -76,7 +76,10 @@ cleaner.start()
 # при любом сообщении в группу
 @bot.message_handler(chat_types=['group', 'supergroup'])
 def on_group_message(message: telebot.types.Message):
-    DBWorker.UserManager.user_is_admin(message.from_user.id)
+    user = DBWorker.UserManager.get_or_create(
+        telegram_id=message.from_user.id,
+        username=message.from_user.username
+    )
 
     group = DBWorker.GroupManager.get_or_create(
         chat_id=message.chat.id,
@@ -87,6 +90,13 @@ def on_group_message(message: telebot.types.Message):
     message_thread = DBWorker.MessageThreadManager.get_or_create(
         group=group,
         thread_id=message.message_thread_id
+    )
+
+    thread_history = DBWorker.ThreadHistory.create_new(
+        thread_id=message_thread.id,
+        from_user=user.telegram_id,
+        message_id=message.message_id,
+        text=message.text
     )
 
     action = RegexWorker.message_match(message_thread.id, message.text)
@@ -175,7 +185,6 @@ def on_regex_stage_is_regex_wait(message: telebot.types.Message) -> None:
     regex_wait = DBWorker.RegexWaitManager.get_by_telegram_id(message.from_user.id)
     function_name: str = regex_wait.function_name
     regex_text: str = message.text
-    answer_text: str = 'Введите текст ответа'
 
     new_action = DBWorker.ActionManager.create_new(
         thread_id=regex_wait.thread.id,
@@ -185,20 +194,27 @@ def on_regex_stage_is_regex_wait(message: telebot.types.Message) -> None:
     )
 
     regex_wait.set_action(new_action)
+    regex_wait.set_stage('confirm_wait')
 
-    match function_name:
-        case 'answer':
-            regex_wait.set_stage('answer_text')
+    history_for_thread = DBWorker.ThreadHistory.get_history_for_thread(regex_wait.thread.id)
 
-        case 'answer_delete_after' | 'answer_yes_no':
-            regex_wait.set_stage('time_delay')
-            answer_text = 'Введите время удаления'
+    i = 1
+    match_list: list = []
+
+    for msg in history_for_thread:
+        if i == 100 and len(match_list) != 10:
+            i = 1
+
+        if RegexWorker.simple_match(regex_text, msg.text):
+            match_list.append(msg)
+
+            if len(match_list) == 10:
+                break
 
     bot.send_message(
         chat_id=message.chat.id,
         message_thread_id=message.message_thread_id,
-        text=answer_text,
-        reply_markup=keyboards.back_to_menu_group_markup
+        text='Под данное правило попадут следущие сообщения, продолжить?'
     )
 
 
@@ -448,7 +464,7 @@ def on_log_switch(call: telebot.types.CallbackQuery) -> None:
 
 def log(update: telebot.types.Update | str, log_level: int = logging.INFO):
     logging.log(log_level, pprint.pformat(delete_none(update.__dict__)))
-    print('\n'*2)
+    print('\n' * 2)
 
     for log_thread in DBWorker.MessageThreadManager.get_log_threads():
         if type(update) is str:
