@@ -10,7 +10,7 @@ class BaseModel(Model):
 
 
 class User(BaseModel):
-    telegram_id = IntegerField(null=False),
+    telegram_id = IntegerField(null=False)
     username = CharField(null=True)
     power_level = IntegerField(null=False, default=1)
 
@@ -37,6 +37,7 @@ class Action(BaseModel):
     def_name = CharField(null=False)
     text = CharField(null=False)
     time_out_value = IntegerField(null=True, default=0)
+    enable = BooleanField(default=False, null=False)
 
     def set_text(self, text: str) -> None:
         self.text = text
@@ -48,6 +49,10 @@ class Action(BaseModel):
 
     def set_name(self, name: str):
         self.name = name
+        self.save()
+
+    def set_enable(self, status: bool):
+        self.enable = status
         self.save()
 
 
@@ -89,6 +94,7 @@ class ThreadHistory(BaseModel):
 Action.create_table()
 Group.create_table()
 User.create_table()
+ThreadHistory.create_table()
 DeleteList.create_table()
 MessageThread.create_table()
 RegexWait.create_table()

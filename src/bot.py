@@ -32,6 +32,52 @@ FORWARDED_TYPES = [
 ]
 
 
+def check_regex_in_thread_history(chat_id: int, message_thread_id: int, regex_text: str, checking_thread: int, start_i: int = 0) -> None:
+    thread_history = DBWorker.ThreadHistory.get_history_for_thread(checking_thread)
+    i: int = 0
+    match_list: list = []
+    match_num: int = 3
+    end_i: int = 0
+
+    for msg in thread_history:
+        i += 1
+        if i < start_i:
+            continue
+
+        if RegexWorker.simple_match(regex_text, msg.text):
+            match_list.append(msg)
+
+        if len(match_list) == match_num:
+            end_i = i
+            break
+
+    if len(match_list) == 0:
+        bot.send_message(
+            chat_id=chat_id,
+            message_thread_id=message_thread_id,
+            text='Для данного чата не найдено попаданий под правила. Продолжить?',
+            reply_markup=keyboards.get_confirm_keyboard(False)
+        )
+
+    else:
+        text: str = ''
+        for msg in match_list:
+            text += f'{msg.text}\n\n'
+
+        bot.send_message(
+            chat_id=chat_id,
+            message_thread_id=message_thread_id,
+            text=text
+        )
+
+        bot.send_message(
+            chat_id=chat_id,
+            message_thread_id=message_thread_id,
+            text='Данные сообщения попададут под правило. Продолжить?',
+            reply_markup=keyboards.get_confirm_keyboard(True, i+1)
+        )
+
+
 def delete_none(_dict):
     new_dict = {}
 
@@ -129,7 +175,7 @@ def on_group_message(message: telebot.types.Message):
 # для регистрации приватного чата в список
 @bot.message_handler(
     chat_types=['private'],
-    func=lambda message: DBWorker.UserManager.user_is_admin(message.from_user.id),
+    func=lambda message: DBWorker.UserManager.user_is_admin(message.from_user.id, message.from_user.username),
     commands=['register']
 )
 def on_chat_register(message: telebot.types.Message):
@@ -154,7 +200,7 @@ def on_chat_register(message: telebot.types.Message):
 # при сообщении админа в личку
 @bot.message_handler(
     chat_types=['private'],
-    func=lambda message: DBWorker.UserManager.user_is_admin(message.from_user.id),
+    func=lambda message: DBWorker.UserManager.user_is_admin(message.from_user.id, message.from_user.username),
     commands=['groups']
 )
 def on_private_admin_message(message: telebot.types.Message) -> None:
@@ -193,28 +239,16 @@ def on_regex_stage_is_regex_wait(message: telebot.types.Message) -> None:
         text='None'
     )
 
+    new_action.save()
+
     regex_wait.set_action(new_action)
     regex_wait.set_stage('confirm_wait')
 
-    history_for_thread = DBWorker.ThreadHistory.get_history_for_thread(regex_wait.thread.id)
-
-    i = 1
-    match_list: list = []
-
-    for msg in history_for_thread:
-        if i == 100 and len(match_list) != 10:
-            i = 1
-
-        if RegexWorker.simple_match(regex_text, msg.text):
-            match_list.append(msg)
-
-            if len(match_list) == 10:
-                break
-
-    bot.send_message(
+    check_regex_in_thread_history(
         chat_id=message.chat.id,
         message_thread_id=message.message_thread_id,
-        text='Под данное правило попадут следущие сообщения, продолжить?'
+        regex_text=regex_text,
+        checking_thread=regex_wait.thread.id
     )
 
 
@@ -274,6 +308,7 @@ def on_regex_stage_is_answer_text(message: telebot.types.Message) -> None:
 def on_regex_stage_is_answer_text(message: telebot.types.Message) -> None:
     regex_wait = DBWorker.RegexWaitManager.get_by_telegram_id(message.from_user.id)
     regex_wait.action.set_name(message.text)
+    regex_wait.action.set_enable(True)
 
     regex_wait.delete_instance()
 
@@ -442,7 +477,7 @@ def on_function_select(call: telebot.types.CallbackQuery) -> None:
     )
 
 
-# при нажатии на сделать лог-чатом\ сделать обычным
+# при нажатии на сделать лог-чатом сделать обычным
 @bot.callback_query_handler(func=lambda call: call.data.startswith('log_'))
 def on_log_switch(call: telebot.types.CallbackQuery) -> None:
     thread_id: int = int(call.data.split('_')[-1])
@@ -457,14 +492,60 @@ def on_log_switch(call: telebot.types.CallbackQuery) -> None:
     )
 
 
+# при выборе чего-то из меню подтвреждения выражения
+@bot.callback_query_handler(func=lambda call: call.data.startswith('confirm_'))
+def on_confirm_press(call: telebot.types.CallbackQuery) -> None:
+    command: str = call.data.split('_')[1]
+    regex_wait = DBWorker.RegexWaitManager.get_by_telegram_id(call.from_user.id)
+    answer_text: str = 'Введите текст ответа'
+
+    match command:
+        case 'yes':
+            match regex_wait.function_name:
+                case 'answer':
+                    regex_wait.set_stage('answer_text')
+
+                case 'answer_delete_after' | 'answer_yes_no':
+                    regex_wait.set_stage('time_delay')
+                    answer_text = 'Введите время удаления'
+
+        case 'no':
+            regex_wait.set_stage('regex_wait')
+            answer_text = 'Введите регулярное выражение'
+
+        case 'continue':
+            start_i: int = int(call.data.split('_')[-1])
+
+            check_regex_in_thread_history(
+                chat_id=call.message.chat.id,
+                message_thread_id=call.message.message_thread_id,
+                regex_text=regex_wait.action.regular_expression,
+                checking_thread=regex_wait.thread.id,
+                start_i=start_i
+            )
+
+            return
+
+    bot.send_message(
+        chat_id=call.message.chat.id,
+        message_thread_id=call.message.message_thread_id,
+        text=answer_text,
+        reply_markup=keyboards.back_to_menu_group_markup
+    )
+
+
 """
     _____________________________________UNNAMED ZONE_____________________________________
 """
 
 
 def log(update: telebot.types.Update | str, log_level: int = logging.INFO):
-    logging.log(log_level, pprint.pformat(delete_none(update.__dict__)))
-    print('\n' * 2)
+
+    if type(update) is not str:
+        logging.log(log_level, pprint.pformat(delete_none(update.__dict__)))
+
+    else:
+        logging.log(log_level, pprint.pformat(update))
 
     for log_thread in DBWorker.MessageThreadManager.get_log_threads():
         if type(update) is str:

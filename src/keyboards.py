@@ -140,3 +140,30 @@ def get_with_back_button(thread_id: int) -> InlineKeyboardMarkup:
         ]
     )
 
+
+def get_confirm_keyboard(continue_find: bool = False, end_i: int = 0) -> InlineKeyboardMarkup:
+    kb: InlineKeyboardMarkup = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton(
+                    text='Да',
+                    callback_data='confirm_yes'
+                ),
+
+                InlineKeyboardButton(
+                    text='Нет',
+                    callback_data='confirm_no'
+                )
+            ]
+        ]
+    )
+
+    if continue_find:
+        kb.add(
+            InlineKeyboardButton(
+                text='>',
+                callback_data=f'confirm_continue_{end_i}'
+            )
+        )
+
+    return kb

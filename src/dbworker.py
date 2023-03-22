@@ -9,17 +9,17 @@ from datetime import datetime
 class DBWorker:
     class UserManager:
         @staticmethod
-        def get_by_telegram_id(telegram_id: int) -> User:
-            return User.get(User.telegram_id == telegram_id)
+        def get_by_telegram_id(telegram_id: int) -> User | None:
+            return User.get_or_none(User.telegram_id == telegram_id)
 
         @staticmethod
-        def user_is_admin(telegram_id: int = 0) -> None:
-            return User.get_or_create(telegram_id=telegram_id)[0].power_level >= 1  # не забыть изменить потом на 2
-
+        def user_is_admin(telegram_id: int, username: str) -> bool:
+            return User.get_or_create(telegram_id=telegram_id, username=username)[
+                0].power_level >= 1  # не забыть изменить потом на 2
 
         @staticmethod
         def get_or_create(telegram_id: int, username: str) -> User:
-            return User.get_or_create(telegram_id=telegram_id, username=username)
+            return User.get_or_create(telegram_id=telegram_id, username=username)[0]
 
     class GroupManager:
         @staticmethod
@@ -59,6 +59,12 @@ class DBWorker:
             )[0]
 
         @staticmethod
+        def find_thread_in_group(chat_id: int, thread_telegram_id: int) -> MessageThread | None:
+            group: Group = DBWorker.GroupManager.get_group_by_chat_id(chat_id)
+            return MessageThread.get_or_none(MessageThread.group == group,
+                                             MessageThread.thread_id == thread_telegram_id)
+
+        @staticmethod
         def get_log_threads() -> tuple[MessageThread] | None:
             return MessageThread.select().where(MessageThread.is_log_chat == True)
 
@@ -74,10 +80,10 @@ class DBWorker:
 
     class RegexWaitManager:
         @staticmethod
-        def get_by_telegram_id(telegram_id: int) -> RegexWait:
+        def get_by_telegram_id(telegram_id: int) -> RegexWait | None:
             user: User = DBWorker.UserManager.get_by_telegram_id(telegram_id)
 
-            return RegexWait.get(RegexWait.user == user)
+            return RegexWait.get_or_none(RegexWait.user == user)
 
         @staticmethod
         def user_in_wait_list(telegram_id: int) -> bool:
@@ -103,6 +109,9 @@ class DBWorker:
         def create_new(thread_id: int, telegram_id: int, function_name: str, delay=None) -> RegexWait:
             thread = DBWorker.MessageThreadManager.get_thread_by_id(thread_id)
             user = DBWorker.UserManager.get_by_telegram_id(telegram_id)
+
+            if DBWorker.RegexWaitManager.get_by_telegram_id(telegram_id) is not None:
+                DBWorker.RegexWaitManager.get_by_telegram_id(telegram_id).delete_instance()
 
             new_regex: RegexWait = RegexWait.create(
                 thread=thread,
@@ -148,7 +157,7 @@ class DBWorker:
         @staticmethod
         def get_rules_for_thread(thread_id: int) -> tuple[Action] | None:
             thread: MessageThread = DBWorker.MessageThreadManager.get_thread_by_id(thread_id)
-            return Action.select().where(Action.thread == thread)
+            return Action.select().where(Action.thread == thread, Action.enable == True)
 
         @staticmethod
         def clear_rules_for_thread(thread_id: int) -> None:
