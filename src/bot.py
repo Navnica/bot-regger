@@ -28,11 +28,12 @@ stop = False
 
 FORWARDED_TYPES = [
     'text', 'audio', 'document', 'photo', 'sticker', 'video', 'video_note', 'voice', 'location',
-    'contact'
+    'contact', 'animation'
 ]
 
 
-def check_regex_in_thread_history(chat_id: int, message_thread_id: int, regex_text: str, checking_thread: int, start_i: int = 0) -> None:
+def check_regex_in_thread_history(chat_id: int, message_thread_id: int, regex_text: str, checking_thread: int,
+                                  start_i: int = 0) -> None:
     thread_history = DBWorker.ThreadHistory.get_history_for_thread(checking_thread)
     i: int = 0
     match_list: list = []
@@ -74,7 +75,7 @@ def check_regex_in_thread_history(chat_id: int, message_thread_id: int, regex_te
             chat_id=chat_id,
             message_thread_id=message_thread_id,
             text='Данные сообщения попададут под правило. Продолжить?',
-            reply_markup=keyboards.get_confirm_keyboard(True, i+1)
+            reply_markup=keyboards.get_confirm_keyboard(True, i + 1)
         )
 
 
@@ -120,7 +121,7 @@ cleaner.start()
 
 
 # при любом сообщении в группу
-@bot.message_handler(chat_types=['group', 'supergroup'])
+@bot.message_handler(chat_types=['group', 'supergroup'], content_types=FORWARDED_TYPES)
 def on_group_message(message: telebot.types.Message):
     user = DBWorker.UserManager.get_or_create(
         telegram_id=message.from_user.id,
@@ -540,10 +541,8 @@ def on_confirm_press(call: telebot.types.CallbackQuery) -> None:
 
 
 def log(update: telebot.types.Update | str, log_level: int = logging.INFO):
-
     if type(update) is not str:
         logging.log(log_level, pprint.pformat(delete_none(update.__dict__)))
-
     else:
         logging.log(log_level, pprint.pformat(update))
 
@@ -620,10 +619,7 @@ def on_any_action(bot_instance: telebot.TeleBot, update: telebot.types.Update):
             time_delete=datetime.datetime.now()
         )
 
-    try:
-        log(update, logging.INFO)
-    except:
-        pass
+    log(update, logging.INFO)
 
 
 def start_poll() -> None:
